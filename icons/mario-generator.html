@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>صور متجر Google Play - Star Adventure</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #1e293b;
+            color: #f8fafc;
+            margin: 0;
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { color: #facc15; margin: 0 0 8px 0; font-size: 24px; text-shadow: 2px 2px #000; }
+        p { color: #cbd5e1; margin: 0 0 25px 0; font-size: 15px; }
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            width: 100%;
+            max-width: 1050px;
+            align-items: center;
+        }
+        .card {
+            background: #0f172a;
+            border: 2px solid #334155;
+            border-radius: 12px;
+            padding: 18px;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+        }
+        .card h3 { margin: 0 0 12px 0; color: #38bdf8; font-size: 16px; }
+        canvas {
+            border: 2px solid #475569;
+            border-radius: 8px;
+            max-width: 100%;
+            height: auto;
+            background: #60a5fa;
+        }
+        .btn {
+            margin-top: 14px;
+            padding: 12px 26px;
+            font-size: 15px;
+            font-weight: 700;
+            background: #e11d48;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.4);
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #be123c; transform: translateY(-2px); }
+        .row {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .row .card { flex: 1; min-width: 300px; }
+    </style>
+</head>
+<body>
+
+    <h1>مكتبة صور متجر Google Play الرسمية (طراز ماريو)</h1>
+    <p>تم تصميم الصور بناءً على شخصية وعالم اللعبة الفعلي — اضغط على الزر لتحميل كل صورة فوراً.</p>
+
+    <div class="container">
+        <!-- 1. الرسم الترويجي -->
+        <div class="card">
+            <h3>1. الرسم الترويجي (Feature Graphic) — 1024 × 500</h3>
+            <canvas id="banner" width="1024" height="500"></canvas>
+            <button class="btn" onclick="downloadCanvas('banner', 'feature-graphic.png')">تحميل الرسم الترويجي (1024x500)</button>
+        </div>
+
+        <div class="row">
+            <!-- 2. لقطة شاشة 1 -->
+            <div class="card">
+                <h3>2. لقطة الشاشة الأولى: المرحلة الكلاسيكية — 1080 × 1920</h3>
+                <canvas id="screen1" width="1080" height="1920" style="max-height: 480px;"></canvas>
+                <button class="btn" onclick="downloadCanvas('screen1', 'screenshot-1.png')">تحميل لقطة الشاشة 1</button>
+            </div>
+
+            <!-- 3. لقطة شاشة 2 -->
+            <div class="card">
+                <h3>3. لقطة الشاشة الثانية: مرحلة القفز والنجوم — 1080 × 1920</h3>
+                <canvas id="screen2" width="1080" height="1920" style="max-height: 480px;"></canvas>
+                <button class="btn" onclick="downloadCanvas('screen2', 'screenshot-2.png')">تحميل لقطة الشاشة 2</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // دالة رسم بيئة المنصات (السماء، الشمس، التلال الخضراء، الأرضية)
+        function drawSkyAndHills(ctx, w, h, isSunset = false) {
+            // السماء
+            const sky = ctx.createLinearGradient(0, 0, 0, h);
+            if (!isSunset) {
+                sky.addColorStop(0, '#38bdf8');
+                sky.addColorStop(0.5, '#7dd3fc');
+                sky.addColorStop(1, '#bae6fd');
+            } else {
+                sky.addColorStop(0, '#ea580c');
+                sky.addColorStop(0.4, '#f97316');
+                sky.addColorStop(0.8, '#fde047');
+            }
+            ctx.fillStyle = sky;
+            ctx.fillRect(0, 0, w, h);
+
+            // الشمس الساطعة
+            const sunGrad = ctx.createRadialGradient(w * 0.85, h * 0.15, 10, w * 0.85, h * 0.15, 160);
+            sunGrad.addColorStop(0, '#ffffff');
+            sunGrad.addColorStop(0.2, '#fef08a');
+            sunGrad.addColorStop(0.6, 'rgba(253, 224, 71, 0.4)');
+            sunGrad.addColorStop(1, 'transparent');
+            ctx.fillStyle = sunGrad;
+            ctx.beginPath();
+            ctx.arc(w * 0.85, h * 0.15, 160, 0, Math.PI * 2);
+            ctx.fill();
+
+            // سحب كرتونية بيضاء
+            drawCloud(ctx, w * 0.15, h * 0.12, 1);
+            drawCloud(ctx, w * 0.55, h * 0.20, 0.8);
+
+            // تلال خضراء بعيدة
+            ctx.fillStyle = isSunset ? '#15803d' : '#4ade80';
+            ctx.beginPath();
+            ctx.arc(w * 0.25, h * 0.85, w * 0.35, Math.PI, 0);
+            ctx.fill();
+
+            // تلال خضراء قريبة
+            ctx.fillStyle = isSunset ? '#166534' : '#22c55e';
+            ctx.beginPath();
+            ctx.arc(w * 0.75, h * 0.85, w * 0.45, Math.PI, 0);
+            ctx.fill();
+        }
+
+        function drawCloud(ctx, x, y, scale) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.scale(scale, scale);
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(0, 0, 30, 0, Math.PI * 2);
+            ctx.arc(35, -10, 35, 0, Math.PI * 2);
+            ctx.arc(75, 0, 30, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.restore();
+        }
+
+        // رسم الأرضية (عشب أخضر + تراب بني)
+        function drawGround(ctx, w, groundY, h) {
+            // شريط العشب
+            ctx.fillStyle = '#16a34a';
+            ctx.fillRect(0, groundY, w, 24);
+            ctx.fillStyle = '#15803d';
+            ctx.fillRect(0, groundY + 20, w, 6);
+
+            // التربة البنية
+            ctx.fillStyle = '#9a3412';
+            ctx.fillRect(0, groundY + 26, w, h - groundY - 26);
+
+            // تفاصيل أحجار داخل التربة
+            ctx.fillStyle = '#7c2d12';
+            for (let y = groundY + 35; y < h; y += 40) {
+                for (let x = 15; x < w; x += 60) {
+                    ctx.fillRect(x + ((y % 80 === 0) ? 20 : 0), y, 32, 14);
+                }
+            }
+        }
+
+        // رسم شخصية البطل الأصلية بدقة (Character)
+        function drawMarioHero(ctx, x, y, scale = 1, flip = false) {
+            ctx.save();
+            ctx.translate(x, y);
+            if (flip) ctx.scale(-scale, scale);
+            else ctx.scale(scale, scale);
+
+            // نقطة الارتكاز (0,0) عند منتصف القدمين
+
+            // 1. الحذاء البني (Shoes)
+            ctx.fillStyle = '#543820';
+            ctx.strokeStyle = '#2c1d11';
+            ctx.lineWidth = 2;
+            ctx.fillRect(-22, -14, 20, 14);
+            ctx.strokeRect(-22, -14, 20, 14);
+            ctx.fillRect(0, -14, 22, 14);
+            ctx.strokeRect(0, -14, 22, 14);
+
+            // 2. السروال الأزرق مع الأزرار الصفراء (Blue Overalls)
+            ctx.fillStyle = '#2563eb';
+            ctx.strokeStyle = '#1e3a8a';
+            ctx.lineWidth = 2;
+            ctx.fillRect(-20, -52, 40, 40);
+            ctx.strokeRect(-20, -52, 40, 40);
+
+            // أزرار صفراء
+            ctx.fillStyle = '#facc15';
+            ctx.fillRect(-17, -48, 8, 8);
+            ctx.fillRect(9, -48, 8, 8);
+
+            // 3. القميص الأحمر الخلفي والأكمام
+            ctx.fillStyle = '#dc2626';
+            ctx.fillRect(-22, -60, 44, 14);
+
+            // 4. الرأس البيضاوي (Tan Head)
+            ctx.fillStyle = '#d8b08c';
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, -78, 22, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // 5. العين (Eye)
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(4, -86, 10, 14);
+            ctx.fillStyle = '#000000';
+            ctx.fillRect(10, -84, 4, 10);
+
+            // 6. الأنف (Nose)
+            ctx.fillStyle = '#c49474';
+            ctx.beginPath();
+            ctx.arc(16, -75, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // 7. الشارب البني (Mustache)
+            ctx.fillStyle = '#452a15';
+            ctx.fillRect(4, -72, 16, 7);
+
+            // 8. القفاز الأبيض واليد (White Glove)
+            ctx.fillStyle = '#dc2626';
+            ctx.beginPath();
+            ctx.arc(16, -50, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#f8fafc';
+            ctx.strokeStyle = '#475569';
+            ctx.beginPath();
+            ctx.arc(20, -48, 8, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // 9. القبعة الحمراء مع النقطة البيضاء والمقدمة
+            ctx.fillStyle = '#dc2626';
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(0, -90, 22, Math.PI, 0);
+            ctx.fill();
+            ctx.stroke();
+
+            // مقدمة القبعة (Brim)
+            ctx.fillRect(2, -94, 24, 10);
+            ctx.strokeRect(2, -94, 24, 10);
+
+            // النقطة البيضاء الدائرية في منتصف القبعة
+            ctx.fillStyle = '#ffffff';
+            ctx.beginPath();
+            ctx.arc(-2, -96, 7, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 10. النجمة الذهبية فوق القبعة (Star on Hat)
+            drawGoldenStar(ctx, 0, -122, 15, 7);
+
+            ctx.restore();
+        }
+
+        // دالة رسم النجمة الذهبية
+        function drawGoldenStar(ctx, cx, cy, outerR, innerR) {
+            ctx.save();
+            ctx.fillStyle = '#facc15';
+            ctx.strokeStyle = '#ca8a04';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                ctx.lineTo(cx + Math.cos((18 + i * 72) * Math.PI / 180) * outerR, cy - Math.sin((18 + i * 72) * Math.PI / 180) * outerR);
+                ctx.lineTo(cx + Math.cos((54 + i * 72) * Math.PI / 180) * innerR, cy - Math.sin((54 + i * 72) * Math.PI / 180) * innerR);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // مكعب أصفر [?] أو مكعب طوب أحمر
+        function drawBlock(ctx, x, y, size, isQuestion = true) {
+            ctx.save();
+            if (isQuestion) {
+                ctx.fillStyle = '#f59e0b';
+                ctx.fillRect(x, y, size, size);
+                ctx.strokeStyle = '#78350f';
+                ctx.lineWidth = 3;
+                ctx.strokeRect(x, y, size, size);
+
+                // براغي في الزوايا
+                ctx.fillStyle = '#78350f';
+                ctx.fillRect(x + 3, y + 3, 3, 3);
+                ctx.fillRect(x + size - 6, y + 3, 3, 3);
+                ctx.fillRect(x + 3, y + size - 6, 3, 3);
+                ctx.fillRect(x + size - 6, y + size - 6, 3, 3);
+
+                // علامة استفهام
+                ctx.font = `bold ${size * 0.7}px sans-serif`;
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.fillText('?', x + size / 2, y + size * 0.78);
+            } else {
+                ctx.fillStyle = '#b45309';
+                ctx.fillRect(x, y, size, size);
+                ctx.strokeStyle = '#451a03';
+                ctx.lineWidth = 2.5;
+                ctx.strokeRect(x, y, size, size);
+                // نقش الطوب
+                ctx.fillStyle = '#78350f';
+                ctx.fillRect(x, y + size/2 - 1, size, 2);
+                ctx.fillRect(x + size/2 - 1, y, 2, size/2);
+            }
+            ctx.restore();
+        }
+
+        // أنبوب ماريو الأخضر الشهير (Warp Pipe)
+        function drawWarpPipe(ctx, x, y, w, h) {
+            ctx.save();
+            ctx.fillStyle = '#15803d';
+            ctx.strokeStyle = '#052e16';
+            ctx.lineWidth = 3;
+            // فوهة الأنبوب
+            ctx.fillRect(x - 6, y, w + 12, 28);
+            ctx.strokeRect(x - 6, y, w + 12, 28);
+            // جسم الأنبوب
+            ctx.fillRect(x, y + 28, w, h - 28);
+            ctx.strokeRect(x, y + 28, w, h - 28);
+            // لمعان
+            ctx.fillStyle = 'rgba(255,255,255,0.25)';
+            ctx.fillRect(x + 6, y, 10, 28);
+            ctx.fillRect(x + 10, y + 28, 8, h - 28);
+            ctx.restore();
+        }
+
+        // 1. توليد الرسم الترويجي (1024 × 500)
+        (function renderBanner() {
+            const cv = document.getElementById('banner');
+            const ctx = cv.getContext('2d');
+            const w = 1024, h = 500;
+            drawSkyAndHills(ctx, w, h);
+
+            // أنبوب أخضر
+            drawWarpPipe(ctx, 800, 310, 90, 110);
+
+            // مكعبات طوب ومفاجآت
+            drawBlock(ctx, 420, 240, 52, true);
+            drawBlock(ctx, 472, 240, 52, false);
+            drawBlock(ctx, 524, 240, 52, true);
+            drawBlock(ctx, 576, 240, 52, false);
+
+            // نجمة كبيرة تخرج من المكعب
+            drawGoldenStar(ctx, 550, 175, 28, 14);
+
+            // الأرضية
+            drawGround(ctx, w, 420, h);
+
+            // الشخصية الرئيسية تقفز متجهة نحو اليمين
+            drawMarioHero(ctx, 270, 390, 1.8);
+
+            // عنوان اللعبة
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#facc15';
+            ctx.strokeStyle = '#b45309';
+            ctx.lineWidth = 8;
+            ctx.font = '900 64px sans-serif';
+            ctx.strokeText('STAR ADVENTURE', 512, 95);
+            ctx.fillText('STAR ADVENTURE', 512, 95);
+
+            ctx.fillStyle = '#ffffff';
+            ctx.strokeStyle = '#1e3a8a';
+            ctx.lineWidth = 5;
+            ctx.font = 'bold 24px sans-serif';
+            ctx.strokeText('SUPER RETRO PLATFORMER', 512, 140);
+            ctx.fillText('SUPER RETRO PLATFORMER', 512, 140);
+        })();
+
+        // 2. لقطة شاشة 1 (1080 × 1920)
+        (function renderScreen1() {
+            const cv = document.getElementById('screen1');
+            const ctx = cv.getContext('2d');
+            const w = 1080, h = 1920;
+            drawSkyAndHills(ctx, w, h);
+
+            // شريط المعلومات العلوي (HUD)
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.fillRect(40, 70, w - 80, 110);
+            ctx.font = 'bold 38px monospace';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText('HERO: 025400', 80, 140);
+            ctx.fillStyle = '#facc15';
+            ctx.fillText('★ x18', 560, 140);
+            ctx.fillStyle = '#4ade80';
+            ctx.fillText('WORLD 1-1', 820, 140);
+
+            // أنابيب ومكعبات
+            drawWarpPipe(ctx, 740, 1340, 160, 220);
+            drawBlock(ctx, 320, 1140, 90, false);
+            drawBlock(ctx, 410, 1140, 90, true);
+            drawBlock(ctx, 500, 1140, 90, false);
+            drawBlock(ctx, 590, 1140, 90, true);
+
+            drawGoldenStar(ctx, 455, 990, 45, 22);
+
+            // الأرضية
+            drawGround(ctx, w, 1560, h);
+
+            // البطل يقفز في الهواء
+            drawMarioHero(ctx, 455, 1400, 3.0);
+
+            // أزرار تحكم الشاشة (Touch D-Pad & Buttons)
+            drawTouchControls(ctx, w, h);
+        })();
+
+        // 3. لقطة شاشة 2 (1080 × 1920) - غروب الشمس
+        (function renderScreen2() {
+            const cv = document.getElementById('screen2');
+            const ctx = cv.getContext('2d');
+            const w = 1080, h = 1920;
+            drawSkyAndHills(ctx, w, h, true);
+
+            // HUD
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.fillRect(40, 70, w - 80, 110);
+            ctx.font = 'bold 38px monospace';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillText('HERO: 089200', 80, 140);
+            ctx.fillStyle = '#facc15';
+            ctx.fillText('★ x42', 560, 140);
+            ctx.fillStyle = '#fb923c';
+            ctx.fillText('WORLD 1-2', 820, 140);
+
+            // منصات عائمة
+            drawBlock(ctx, 160, 1250, 90, true);
+            drawBlock(ctx, 250, 1250, 90, false);
+            drawBlock(ctx, 640, 1050, 90, false);
+            drawBlock(ctx, 730, 1050, 90, true);
+
+            drawGoldenStar(ctx, 205, 1140, 35, 17);
+            drawGoldenStar(ctx, 775, 940, 35, 17);
+
+            // الأرضية
+            drawGround(ctx, w, 1560, h);
+
+            // البطل يجري للأمام
+            drawMarioHero(ctx, 480, 1560, 3.0);
+
+            // أزرار اللمس
+            drawTouchControls(ctx, w, h);
+        })();
+
+        // أزرار التحكم باللمس الافتراضية
+        function drawTouchControls(ctx, w, h) {
+            ctx.save();
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.lineWidth = 3;
+
+            // أسهم التوجيه يسار
+            ctx.beginPath();
+            ctx.arc(180, h - 180, 90, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // أزرار القفز يمين (A / B)
+            ctx.beginPath();
+            ctx.arc(w - 150, h - 220, 65, 0, Math.PI * 2);
+            ctx.arc(w - 270, h - 150, 65, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 36px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('B', w - 270, h - 138);
+            ctx.fillText('A', w - 150, h - 208);
+            ctx.restore();
+        }
+
+        // دالة التنزيل
+        function downloadCanvas(id, name) {
+            const link = document.createElement('a');
+            link.download = name;
+            link.href = document.getElementById(id).toDataURL('image/png');
+            link.click();
+        }
+    </script>
+</body>
+</html>
