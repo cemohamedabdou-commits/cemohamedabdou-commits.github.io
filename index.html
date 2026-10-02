@@ -14,9 +14,6 @@
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="مغامرة النجمة — لعبة منصّات مجانية بالعربية"><meta name="twitter:description" content="لعبة منصّات مجانية بالعربية تشبه ماريو: 30 مرحلة، زعماء، أنابيب سرية، باورابس، ومتجر سكينات. العب الآن من المتصفح على الجوال أو الكمبيوتر بدون تحميل."><meta name="twitter:image" content="__SITE__/og-image.png">
 <link rel="icon" href="favicon.svg" type="image/svg+xml"><link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png"><link rel="manifest" href="manifest.webmanifest">
-<!-- بعد ما يعطيك Google Search Console كود التحقق، احذف علامات التعليق من السطر التالي وضع الكود مكانه:
-<meta name="google-site-verification" content="ضع_الكود_هنا">
--->
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"مغامرة النجمة","description":"لعبة منصّات مجانية بالعربية تشبه ماريو: 30 مرحلة، زعماء، أنابيب سرية، باورابس، ومتجر سكينات. العب الآن من المتصفح على الجوال أو الكمبيوتر بدون تحميل.","url":"__SITE__/","image":"__SITE__/og-image.png","inLanguage":"ar","genre":"Platformer","gamePlatform":"Web browser","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;800&display=swap" rel="stylesheet">
 <style>
@@ -28,10 +25,12 @@ body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:"Cair
 canvas{border-radius:14px;background:#4aa8ff;display:block;box-shadow:0 8px 30px #0006}
 .pad{width:100%;max-width:820px;display:flex;justify-content:space-between;align-items:center;padding:0 18px;box-sizing:border-box;direction:ltr}
 .g{display:flex;gap:16px}
-.b{width:78px;height:78px;border-radius:50%;border:2px solid #ffffff66;background:var(--btn);color:#fff;font-size:30px;touch-action:none;-webkit-tap-highlight-color:transparent}
+.b{width:78px;height:78px;border-radius:50%;border:2px solid #ffffff66;background:var(--btn);color:#fff;font-size:30px;touch-action:none;-webkit-tap-highlight-color:transparent;display:inline-flex;align-items:center;justify-content:center}
 .b:active{background:#ffffff66}
 .b.j{width:100px;height:100px}
 .b.f{width:66px;height:66px;font-size:26px;visibility:hidden}
+.b.ed-btn{border:2px dashed #ffd23f !important;cursor:move !important;touch-action:none !important;z-index:999 !important;opacity:1 !important}
+.bimg{display:none;width:75%;height:75%;object-fit:contain;pointer-events:none}
 @media (max-width:380px){.b{width:54px;height:54px}.b.j{width:76px;height:76px}.b.f{width:54px;height:54px}.pad{padding:0 8px}}
 @media (max-width:430px){.b{width:62px;height:62px}.b.j{width:84px;height:84px}.g{gap:10px}}
 .hint{font-size:14px;opacity:.75;display:none}
@@ -66,9 +65,27 @@ canvas{border-radius:14px;background:#4aa8ff;display:block;box-shadow:0 8px 30px
 <h1 class="sr">مغامرة النجمة — لعبة منصّات مجانية بالعربية</h1><p class="sr">لعبة منصّات مجانية بالعربية تشبه ماريو: 30 مرحلة، زعماء، أنابيب سرية، باورابس، ومتجر سكينات. العب الآن من المتصفح على الجوال أو الكمبيوتر بدون تحميل. تحتوي على 6 أنواع من الوحوش و6 زعماء، مراحل بأجواء مختلفة، نظام نجوم وتقييم، وحفظ تلقائي للتقدم في المتصفح.</p><noscript><p style="color:#fff;text-align:center">تحتاج تفعيل JavaScript لتشغيل اللعبة.</p></noscript>
 <canvas id="c"></canvas>
 <button id="mb" tabindex="-1">⏸</button><div id="ui"><div class="pn" id="pn"></div></div>
+
+<!-- شريط وضع تعديل الأزرار -->
+<div id="edbar" style="display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);background:#1c2350ee;border:2px solid #ffd23f;border-radius:16px;padding:8px 14px;z-index:9999;text-align:center;box-shadow:0 6px 20px #0008;max-width:92%;width:420px;direction:rtl">
+ <div style="font-weight:800;font-size:14px;color:#ffd23f;margin-bottom:6px">🛠️ اسحب أي زر لمكانه المفضل على الشاشة</div>
+ <div style="display:flex;gap:6px;justify-content:center">
+  <button class="bt" style="margin:0;padding:6px 12px;font-size:13px;width:auto" onclick="saveLayout()">✓ حفظ الأماكن</button>
+  <button class="bt s" style="margin:0;padding:6px 12px;font-size:13px;width:auto" onclick="resetLayout()">🔄 الافتراضي</button>
+  <button class="bt s" style="margin:0;padding:6px 12px;font-size:13px;width:auto;background:#ffffff26" onclick="cancelLayout()">إلغاء</button>
+ </div>
+</div>
+
 <div class="pad" oncontextmenu="return false">
- <div class="g"><button class="b" data-k="l">◀</button><button class="b" data-k="r">▶</button><button class="b" data-k="d">▼</button></div>
- <div class="g"><button class="b f" data-k="a">🔥</button><button class="b j" data-k="j">⬆</button></div>
+ <div class="g">
+  <button class="b" data-k="l"><span class="btxt">◀</span><img class="bimg" alt=""></button>
+  <button class="b" data-k="r"><span class="btxt">▶</span><img class="bimg" alt=""></button>
+  <button class="b" data-k="d"><span class="btxt">▼</span><img class="bimg" alt=""></button>
+ </div>
+ <div class="g">
+  <button class="b f" data-k="a"><span class="btxt">🔥</span><img class="bimg" alt=""></button>
+  <button class="b j" data-k="j"><span class="btxt">⬆</span><img class="bimg" alt=""></button>
+ </div>
 </div>
 <div class="rot">🔄 للحصول على أفضل تجربة اقلب الهاتف أفقيًا</div>
 <div class="hint">الأسهم أو A/D للحركة · مسافة للقفز (اضغط أطول = قفزة أعلى) · ↓ للنزول داخل الأنابيب · X للنار 🔥</div>
@@ -76,6 +93,7 @@ canvas{border-radius:14px;background:#4aa8ff;display:block;box-shadow:0 8px 30px
 const c=document.getElementById('c'),x=c.getContext('2d'),T=32,H=448,rows=14,F='Cairo,system-ui,sans-serif';
 let cols=130,FX=124*T,lv=0,unl=0,wal=0,skIdx=0,own=[0],cps=[60],lt=0,view='main',pname='لاعب',st={k:0,c:0,g:0,b:0};
 let warps=[],pipes=[],pw=null,bonus=0,mainSt=null,wcd=0,bc={},items=[],fbs=[],efb=[],deco=[],mp=[],fl=[],shk=0,combo=0,wx=[],ws=0,cg=0,ctot=1,stars={},mute=false;
+let btnPos=null,btnIcons={};
 let W=800,S=1;
 const K={l:0,r:0,j:0,d:0,a:0};
 let map,coins,en,p,cam=0,state='start',stT=0,score=0,n=0,lives=3,cp=60,inv=0,fr=0,buf=0,dying=0,parts=[],bt={};
@@ -88,6 +106,7 @@ function fit(){
  const res=ov?8:(pad.offsetHeight||hint.offsetHeight||0)+(document.querySelector('.rot').offsetHeight||0)+36;
  const cw=Math.floor(Math.min(innerWidth-8,(innerHeight-res)*W/H,1100)),ch=Math.floor(cw*H/W),d=Math.min(devicePixelRatio||1,3);
  c.style.width=cw+'px';c.style.height=ch+'px';c.width=Math.round(cw*d);c.height=Math.round(ch*d);S=c.width/W;
+ if(!isEditingControls) applyBtnPos();
 }
 addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,250));
 function setState(s){state=s;stT=performance.now()}
@@ -165,8 +184,8 @@ function gen(){
  coins.forEach((k,i)=>k.i=i);ctot=coins.length;wxInit();
 }
 const $=id=>document.getElementById(id),ui$=$('ui'),pn=$('pn');
-function save(){try{localStorage.setItem('sa1',JSON.stringify({unl,wal,skIdx,own,pname,st,stars,mute}))}catch(e){}}
-try{const d=JSON.parse(localStorage.getItem('sa1')||'{}');unl=d.unl||0;wal=d.wal||0;skIdx=d.skIdx||0;own=d.own||[0];pname=d.pname||pname;st=Object.assign(st,d.st||{});stars=d.stars||{};mute=!!d.mute;for(let i=0;i<TH.length-1;i++)if(stars[i]&&unl<=i)unl=i+1}catch(e){}
+function save(){try{localStorage.setItem('sa1',JSON.stringify({unl,wal,skIdx,own,pname,st,stars,mute,btnPos,btnIcons}))}catch(e){}}
+try{const d=JSON.parse(localStorage.getItem('sa1')||'{}');unl=d.unl||0;wal=d.wal||0;skIdx=d.skIdx||0;own=d.own||[0];pname=d.pname||pname;st=Object.assign(st,d.st||{});stars=d.stars||{};mute=!!d.mute;btnPos=d.btnPos||null;btnIcons=d.btnIcons||{};for(let i=0;i<TH.length-1;i++)if(stars[i]&&unl<=i)unl=i+1}catch(e){}
 addEventListener('pagehide',save);addEventListener('visibilitychange',()=>{if(document.hidden)pauseG()});
 function ui(){ui$.classList.remove('on')}
 function pick(i){skIdx=i;save();show()}
@@ -176,16 +195,73 @@ function show(v){
  if(v)view=v;ui$.classList.add('on');
  const av=`<div class="av"><canvas width="112" height="128" data-i="${skIdx}"></canvas></div>`;
  let h='';
- if(view==='main')h=av+`<h1>⭐ مغامرة النجمة</h1><p>👤 ${pname} · 🪙 ${wal}</p>${sv?`<button class="bt" onclick="loadG()">⏩ متابعة المحفوظ — المرحلة ${sv.lv+1}</button>`:''}<button class="bt${sv?' s':''}" onclick="reset()">▶ ابدأ — المرحلة ${lv+1}: ${TH[lv].n}</button><button class="bt s" onclick="show('levels')">🗺️ المراحل</button><button class="bt s" onclick="show('shop')">🛍️ المتجر والسكينات</button><button class="bt s" onclick="show('profile')">🏆 الملف الشخصي</button><button class="bt s" onclick="tog()">${mute?'🔇 الصوت مغلق':'🔊 الصوت مفتوح'}</button><p style="margin:10px 0 0;font-size:13px;opacity:.7"><a href="privacy.html" target="_blank" rel="noopener" style="color:#fff">سياسة الخصوصية</a></p>`;
+ if(view==='main')h=av+`<h1>⭐ مغامرة النجمة</h1><p>👤 ${pname} · 🪙 ${wal}</p>${sv?`<button class="bt" onclick="loadG()">⏩ متابعة المحفوظ — المرحلة ${sv.lv+1}</button>`:''}<button class="bt${sv?' s':''}" onclick="reset()">▶ ابدأ — المرحلة ${lv+1}: ${TH[lv].n}</button><button class="bt s" onclick="show('levels')">🗺️ المراحل</button><button class="bt s" onclick="show('shop')">🛍️ المتجر والسكينات</button><button class="bt s" onclick="show('ctrl')">🎮 أزرار التحكم ورسمها</button><button class="bt s" onclick="show('profile')">🏆 الملف الشخصي</button><button class="bt s" onclick="tog()">${mute?'🔇 الصوت مغلق':'🔊 الصوت مفتوح'}</button><p style="margin:10px 0 0;font-size:13px;opacity:.7"><a href="privacy.html" target="_blank" rel="noopener" style="color:#fff">سياسة الخصوصية</a></p>`;
  else if(view==='pause')h=`<h1>⏸ إيقاف مؤقت</h1><p>${TH[lv].n} — 🪙 ${n} · ⭐ ${score} · ❤️ ${lives}</p>${msg?`<p>${msg}</p>`:''}<button class="bt" onclick="resumeG()">▶ متابعة</button><button class="bt s" onclick="saveG()">💾 حفظ التقدم</button><button class="bt s" onclick="show('main')">🏠 الرئيسية</button><button class="bt s" onclick="tog()">${mute?'🔇 الصوت مغلق':'🔊 الصوت مفتوح'}</button>`;
  else if(view==='profile')h=`<h1>الملف الشخصي</h1>`+av+`<input class="in" maxlength="12" value="${pname}" onchange="setName(this.value)"><div class="gr">`+[['🏆','أعلى نقاط',st.b],['🗺️','المراحل المفتوحة',(unl+1)+'/'+TH.length],['🪙','عملات جمعتها',st.c],['👾','أعداء هزمتهم',st.k],['🎮','عدد المحاولات',st.g],['🛍️','السكينات',own.length+'/'+SK.length],['⭐','نجوم المراحل',Object.values(stars).reduce((a,b)=>a+b,0)+'/'+TH.length*3]].map(a=>`<div class="cd"><b>${a[0]} ${a[2]}</b><small>${a[1]}</small></div>`).join('')+`</div><button class="bt s" onclick="show('main')">رجوع</button>`;
  else if(view==='levels')h=`<h1>المراحل</h1><div class="gr">`+TH.map((t,i)=>`<button class="bt ${i===lv?'':'s'}" ${i>unl?'disabled':''} onclick="lv=${i};show('main')">${i>unl?'🔒':i+1}<br><small>${t.n}</small><br><small>${'🔥'.repeat(t.dk)}</small><br><small style="color:#ffd23f">${'★'.repeat(stars[i]|0)}${'☆'.repeat(3-(stars[i]|0))}</small></button>`).join('')+`</div><button class="bt s" onclick="show('main')">رجوع</button>`;
  else if(view==='shop')h=`<h1>المتجر</h1><p>🪙 ${wal} عملة</p><div class="gr">`+SK.map((k,i)=>`<div class="cd ${i===skIdx?'sel':''}"><canvas width="112" height="128" data-i="${i}"></canvas><b>${k.n}</b>`+(own.includes(i)?`<button class="bt ${i===skIdx?'s':''}" onclick="pick(${i})">${i===skIdx?'مستخدم':'اختيار'}</button>`:`<button class="bt s" ${wal<k.p?'disabled':''} onclick="buy(${i})">🪙 ${k.p}</button>`)+`</div>`).join('')+`</div><button class="bt s" onclick="show('main')">رجوع</button>`;
- else if(view==='win'){const last=lv>=TH.length-1;h=`<h1>🎉 أحسنت!</h1><div style="font-size:44px;letter-spacing:6px">${'⭐'.repeat(ws)}${'☆'.repeat(3-ws)}</div><p>النقاط: ${score} · 🪙 ${cg}/${ctot} · ❤️ ${lives}</p>`+(last?`<p>أنهيت كل المراحل! 🏆</p>`:`<button class="bt" onclick="lv++;reset()">المرحلة التالية ▶</button>`)+`<button class="bt s" onclick="reset()">أعد المرحلة</button><button class="bt s" onclick="show('main')">القائمة</button>`}
+ else if(view==='win'){
+  const last=lv>=TH.length-1;
+  const curName=`المرحلة ${lv+1}: ${TH[lv].n}`;
+  const nxtName=!last?`المرحلة ${lv+2}: ${TH[lv+1].n}`:'';
+  const pwrName=(p&&p.pw===2)?'🔥 زهرة النار':(p&&p.pw===1)?'🍄 الفطر السحري':'';
+  h=`<h1>🎉 أحسنت!</h1>
+  <div style="font-size:44px;letter-spacing:6px">${'⭐'.repeat(ws)}${'☆'.repeat(3-ws)}</div>
+  <div style="background:#ffffff14;border-radius:14px;padding:10px 14px;margin:8px 0;text-align:right">
+   <div style="font-size:13px;opacity:.75">المرحلة المكتملة:</div>
+   <div style="font-size:17px;font-weight:800;color:#ffd23f;margin-bottom:6px">${curName}</div>
+   ${!last?`<div style="font-size:13px;opacity:.75">المرحلة التالية:</div>
+   <div style="font-size:17px;font-weight:800;color:#a9dcff">${nxtName}</div>`:''}
+  </div>
+  ${(pwrName||lives>1)?`<p style="margin:4px 0 8px;font-size:13px;color:#7fcf9f;background:#2e9e4f26;border:1px solid #2e9e4f66;padding:6px 10px;border-radius:10px">⚡ سينتقل معك إلى المرحلة التالية: ${pwrName?pwrName+' · ':''}❤️ ${lives} قلوب</p>`:''}
+  <p>النقاط: ${score} · 🪙 ${cg}/${ctot} · ❤️ ${lives}</p>`+
+  (last?`<p>أنهيت كل المراحل! 🏆</p>`:`<button class="bt" onclick="nextLevel()">المرحلة التالية: ${TH[lv+1].n} ▶</button>`)+
+  `<button class="bt s" onclick="reset()">أعد المرحلة</button><button class="bt s" onclick="show('main')">القائمة</button>`;
+ }
+ else if(view==='ctrl'){
+  h=`<h1>أزرار التحكم</h1>
+  <button class="bt" onclick="enterLayoutEdit()">📐 تحريك وتعديل أماكن الأزرار (بالسحب)</button>
+  <hr style="border:0;border-top:1px solid #ffffff26;margin:12px 0">
+  <p style="margin:2px 0 8px;font-size:15px;color:#ffd23f"><b>🎨 ارسم شكل الزر بنفسك:</b></p>
+  <div style="display:flex;gap:6px;justify-content:center;margin-bottom:8px">
+   <button class="bt tbtn" style="padding:6px 10px;font-size:14px;width:auto;margin:0" onclick="selDraw('l',this)">◀ يسار</button>
+   <button class="bt s tbtn" style="padding:6px 10px;font-size:14px;width:auto;margin:0" onclick="selDraw('r',this)">▶ يمين</button>
+   <button class="bt s tbtn" style="padding:6px 10px;font-size:14px;width:auto;margin:0" onclick="selDraw('d',this)">▼ نزول</button>
+   <button class="bt s tbtn" style="padding:6px 10px;font-size:14px;width:auto;margin:0" onclick="selDraw('j',this)">⬆ قفز</button>
+   <button class="bt s tbtn" style="padding:6px 10px;font-size:14px;width:auto;margin:0" onclick="selDraw('a',this)">🔥 نار</button>
+  </div>
+  <div style="display:flex;justify-content:center;margin:6px 0">
+   <canvas id="pcv" width="100" height="100" style="background:#0a1030;border:2px solid #ffd23f;border-radius:50%;touch-action:none;cursor:crosshair;box-shadow:none"></canvas>
+  </div>
+  <div style="display:flex;gap:6px;justify-content:center;align-items:center;margin:8px 0">
+   <span class="pcol" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ffffff;outline:2px solid #ffd23f;cursor:pointer" onclick="setDrawCol('#ffffff',this)"></span>
+   <span class="pcol" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#ffd23f;cursor:pointer" onclick="setDrawCol('#ffd23f',this)"></span>
+   <span class="pcol" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#e53935;cursor:pointer" onclick="setDrawCol('#e53935',this)"></span>
+   <span class="pcol" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#2e9e4f;cursor:pointer" onclick="setDrawCol('#2e9e4f',this)"></span>
+   <span class="pcol" style="display:inline-block;width:24px;height:24px;border-radius:50%;background:#38bdf8;cursor:pointer" onclick="setDrawCol('#38bdf8',this)"></span>
+   <button class="bt s" style="padding:4px 8px;font-size:12px;width:auto;margin:0" onclick="setDrawEraser(this)">🧹 ممحاة</button>
+   <button class="bt s" style="padding:4px 8px;font-size:12px;width:auto;margin:0;background:#e5393540" onclick="clearDraw()">🗑️ مسح</button>
+  </div>
+  <div style="display:flex;gap:8px">
+   <button class="bt" style="margin:4px 0" onclick="saveDraw()">💾 تطبيق الرسمة</button>
+   <button class="bt s" style="margin:4px 0" onclick="resetDraw()">الأصل</button>
+  </div>
+  <button class="bt s" style="margin-top:8px" onclick="show('main')">رجوع</button>`;
+ }
  else h=`<h1>انتهت اللعبة</h1><p>النقاط: ${score}</p><button class="bt" onclick="reset()">حاول مجدداً</button><button class="bt s" onclick="show('main')">القائمة</button>`;
  pn.innerHTML=h;
- pn.querySelectorAll('canvas').forEach(cv=>{const g=cv.getContext('2d');g.scale(3,3);g.translate(18.5,6);figure(g,SK[cv.dataset.i],0,1)});
+ pn.querySelectorAll('canvas').forEach(cv=>{if(cv.id==='pcv')return;const g=cv.getContext('2d');g.scale(3,3);g.translate(18.5,6);figure(g,SK[cv.dataset.i],0,1)});
+ if(view==='ctrl')setTimeout(initPainter,50);
 }
+
+// دالة الانتقال للمرحلة التالية مع الحفاظ الكامل على الباور-أب والقلوب والنقاط
+function nextLevel(){
+ const keepPwr=p?p.pw:0,keepLives=lives,keepScore=score,keepStar=p?p.star:0;
+ lv++;gen();lives=keepLives;score=keepScore;parts=[];spawn();
+ p.pw=keepPwr;p.star=keepStar;setSize();
+ setState('play');lt=150;st.g++;cg=0;combo=0;fl=[];ui();
+}
+
 let msg='',sv=null;try{sv=JSON.parse(localStorage.getItem('sa1s')||'null')}catch(e){}
 function pauseG(){if(state==='play'&&!dying){K.l=K.r=K.j=K.d=K.a=0;setState('pause');msg='';show('pause')}}
 function resumeG(){K.l=K.r=K.j=K.d=K.a=0;setState('play');ui()}
@@ -628,7 +704,7 @@ function draw(){
  x.save();x.font='800 20px '+F;x.textAlign='center';x.fillStyle='#fff';for(const w of(bonus?[{c:22,top:10}]:warps)){x.globalAlpha=.5+.4*Math.sin(fr*.15);x.fillText('⬇',(w.c+1)*T,w.top*T-6-Math.abs(Math.sin(fr*.15))*5)}x.restore();
  for(let i=1;i<cps.length;i++){const px=cps[i];x.fillStyle='#ddd';x.fillRect(px,320,3,64);x.fillStyle=cp>=px?'#3ddc84':'#ef4444';x.beginPath();x.moveTo(px+3,322);x.lineTo(px+26,331+Math.sin(fr*.1+i)*1.5);x.lineTo(px+3,340);x.fill()}
  x.restore();
-  for(const k of coins){const w=Math.abs(Math.cos((fr+k.x)*.06))*8+2,X=k.x-cam;
+ for(const k of coins){const w=Math.abs(Math.cos((fr+k.x)*.06))*8+2,X=k.x-cam;
   x.fillStyle='rgba(255,220,100,.12)';x.beginPath();x.arc(X,k.y,16,0,7);x.fill();
   const g=x.createLinearGradient(X-w,0,X+w,0);g.addColorStop(0,'#b8860b');g.addColorStop(.4,'#ffe27a');g.addColorStop(1,'#d89a1a');
   x.fillStyle='#8a5a00';x.beginPath();x.ellipse(X+1.5,k.y+1.5,w,10,0,0,7);x.fill();
@@ -648,16 +724,188 @@ function draw(){
  const bo=en.find(e=>e.t==='B'&&!e.dead);if(bo&&Math.abs(p.x-bo.x)<720){const bw=Math.min(300,W-40),bx=(W-bw)/2;x.fillStyle='#000a';x.fillRect(bx-2,58,bw+4,14);x.fillStyle='#e53935';x.fillRect(bx,60,bw*Math.max(0,bo.hp)/bo.hp0,10);x.fillStyle='#fff';x.font='800 13px '+F;x.textAlign='center';x.fillText('الزعيم',W/2,56)}
  if(pw&&pw.f>0){x.fillStyle='rgba(0,0,0,'+pw.f+')';x.fillRect(0,0,W,H)}
 }
+
+/* ==========================================================================
+   نظام تخصيص ورسم أزرار التحكم الخفيف (Drag & Reposition + Painter)
+   ========================================================================== */
+let isEditingControls=false,dragBtn=null,dragOffX=0,dragOffY=0;
+let curDrawBtn='l',drawCol='#ffffff',isEraser=false,isDrawing=false,pctx=null;
+const defIcons={l:'◀',r:'▶',d:'▼',j:'⬆',a:'🔥'};
+
+function applyBtnPos(){
+ if(!btnPos){
+  document.querySelectorAll('.b').forEach(b=>{b.style.position='';b.style.left='';b.style.top='';b.style.zIndex=''});
+  return;
+ }
+ document.querySelectorAll('.b').forEach(b=>{
+  const k=b.dataset.k,pos=btnPos[k];
+  if(pos){
+   b.style.position='fixed';
+   b.style.left=Math.max(6,Math.min(innerWidth-b.offsetWidth-6,pos.left))+'px';
+   b.style.top=Math.max(6,Math.min(innerHeight-b.offsetHeight-6,pos.top))+'px';
+   b.style.zIndex='3';
+  }
+ });
+}
+
+function applyBtnIcons(){
+ document.querySelectorAll('.b').forEach(b=>{
+  const k=b.dataset.k,url=btnIcons[k];
+  const txt=b.querySelector('.btxt'),img=b.querySelector('.bimg');
+  if(url){
+   if(txt)txt.style.display='none';
+   if(img){img.src=url;img.style.display='inline-block'}
+  }else{
+   if(txt)txt.style.display='';
+   if(img)img.style.display='none';
+  }
+ });
+}
+
+function initBtnDrag(b){
+ b.addEventListener('pointerdown',e=>{
+  if(!isEditingControls)return;
+  e.preventDefault();dragBtn=b;
+  const rect=b.getBoundingClientRect();
+  dragOffX=e.clientX-rect.left;dragOffY=e.clientY-rect.top;
+  try{b.setPointerCapture(e.pointerId)}catch(_){}
+ });
+ b.addEventListener('pointermove',e=>{
+  if(!isEditingControls||dragBtn!==b)return;
+  e.preventDefault();
+  let nx=e.clientX-dragOffX,ny=e.clientY-dragOffY;
+  nx=Math.max(6,Math.min(innerWidth-b.offsetWidth-6,nx));
+  ny=Math.max(6,Math.min(innerHeight-b.offsetHeight-6,ny));
+  b.style.position='fixed';b.style.left=nx+'px';b.style.top=ny+'px';
+ });
+ const stopDrag=()=>{if(isEditingControls&&dragBtn===b)dragBtn=null};
+ b.addEventListener('pointerup',stopDrag);
+ b.addEventListener('pointercancel',stopDrag);
+}
+
+function enterLayoutEdit(){
+ isEditingControls=true;ui();
+ $('edbar').style.display='block';
+ document.querySelectorAll('.b').forEach(b=>{
+  b.classList.add('ed-btn');
+  if(b.classList.contains('f'))b.style.visibility='visible';
+  if(!btnPos){
+   const r=b.getBoundingClientRect();
+   b.style.position='fixed';b.style.left=Math.round(r.left)+'px';b.style.top=Math.round(r.top)+'px';
+  }
+ });
+}
+
+function endLayoutEdit(){
+ isEditingControls=false;
+ $('edbar').style.display='none';
+ document.querySelectorAll('.b').forEach(b=>b.classList.remove('ed-btn'));
+ fbtn.style.visibility=p&&p.pw===2?'visible':'hidden';
+}
+
+function saveLayout(){
+ btnPos={};
+ document.querySelectorAll('.b').forEach(b=>{
+  const k=b.dataset.k,r=b.getBoundingClientRect();
+  btnPos[k]={left:Math.round(r.left),top:Math.round(r.top)};
+ });
+ save();endLayoutEdit();show('ctrl');
+}
+
+function resetLayout(){
+ btnPos=null;save();
+ document.querySelectorAll('.b').forEach(b=>{b.style.position='';b.style.left='';b.style.top='';b.style.zIndex=''});
+ endLayoutEdit();show('ctrl');
+}
+
+function cancelLayout(){
+ applyBtnPos();endLayoutEdit();show('ctrl');
+}
+
+function initPainter(){
+ const cv=$('pcv');if(!cv)return;
+ pctx=cv.getContext('2d');
+ selDraw(curDrawBtn||'l');
+ const getPos=e=>{
+  const r=cv.getBoundingClientRect(),pt=e.touches?e.touches[0]:e;
+  return{x:(pt.clientX-r.left)*(cv.width/r.width),y:(pt.clientY-r.top)*(cv.height/r.height)};
+ };
+ const start=e=>{
+  e.preventDefault();isDrawing=true;pctx.beginPath();
+  const{x,y}=getPos(e);pctx.moveTo(x,y);draw(e);
+ };
+ const draw=e=>{
+  if(!isDrawing)return;e.preventDefault();
+  const{x,y}=getPos(e);pctx.lineWidth=isEraser?12:6;pctx.lineCap='round';pctx.lineJoin='round';
+  if(isEraser){pctx.globalCompositeOperation='destination-out'}
+  else{pctx.globalCompositeOperation='source-over';pctx.strokeStyle=drawCol}
+  pctx.lineTo(x,y);pctx.stroke();
+ };
+ const stop=()=>{isDrawing=false};
+ cv.onpointerdown=start;cv.onpointermove=draw;cv.onpointerup=stop;cv.onpointercancel=stop;
+}
+
+function selDraw(k,btn){
+ curDrawBtn=k;
+ document.querySelectorAll('.tbtn').forEach(b=>b.classList.add('s'));
+ if(btn)btn.classList.remove('s');
+ else{const el=document.querySelector(`.tbtn[onclick*="'${k}'"]`);if(el)el.classList.remove('s')}
+ clearDrawCanvas();
+ if(btnIcons[k]){
+  const im=new Image();
+  im.onload=()=>{if(pctx&&curDrawBtn===k)pctx.drawImage(im,0,0,100,100)};
+  im.src=btnIcons[k];
+ }else{
+  if(!pctx)return;
+  pctx.fillStyle='#ffffff33';pctx.font='800 42px '+F;pctx.textAlign='center';pctx.textBaseline='middle';
+  pctx.fillText(defIcons[k]||'',50,50);
+ }
+}
+
+function clearDrawCanvas(){if(pctx)pctx.clearRect(0,0,100,100)}
+function clearDraw(){clearDrawCanvas()}
+function setDrawCol(c,el){
+ drawCol=c;isEraser=false;
+ document.querySelectorAll('.pcol').forEach(p=>p.style.outline='none');
+ if(el)el.style.outline='2px solid #ffd23f';
+}
+function setDrawEraser(el){
+ isEraser=true;
+ document.querySelectorAll('.pcol').forEach(p=>p.style.outline='none');
+}
+function saveDraw(){
+ const cv=$('pcv');if(!cv)return;
+ btnIcons[curDrawBtn]=cv.toDataURL('image/png');
+ save();applyBtnIcons();beep(900,.15,'triangle');
+ alert('✅ تم تطبيق الرسمة على الزر بنجاح!');
+}
+function resetDraw(){
+ delete btnIcons[curDrawBtn];
+ save();applyBtnIcons();selDraw(curDrawBtn);beep(400,.1);
+}
+
 function go(){if(AC&&AC.state==='suspended')AC.resume()}
 function press(k){K[k]=1;if(k==='j')buf=8;if(k==='a')fire();go()}
 const km={ArrowLeft:'l',KeyA:'l',ArrowRight:'r',KeyD:'r',ArrowUp:'j',KeyW:'j',Space:'j',ArrowDown:'d',KeyS:'d',KeyX:'a',KeyZ:'a',ShiftLeft:'a',ShiftRight:'a'};
 addEventListener('keydown',e=>{if(e.target.tagName==='INPUT')return;if(e.code==='Escape'||e.code==='KeyP'){if(state==='play')pauseG();else if(state==='pause')resumeG();return}const k=km[e.code];if(k){e.preventDefault();if(!e.repeat)press(k)}else go()});
 addEventListener('keyup',e=>{const k=km[e.code];if(k)K[k]=0});
 c.addEventListener('pointerdown',go);
-document.querySelectorAll('.b').forEach(b=>{const k=b.dataset.k;
- b.addEventListener('pointerdown',e=>{e.preventDefault();try{b.setPointerCapture(e.pointerId)}catch(_){}press(k)});
- ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>{K[k]=0}))});
+document.querySelectorAll('.b').forEach(b=>{
+ const k=b.dataset.k;
+ b.addEventListener('pointerdown',e=>{
+  if(isEditingControls)return;
+  e.preventDefault();try{b.setPointerCapture(e.pointerId)}catch(_){}press(k);
+ });
+ ['pointerup','pointercancel','lostpointercapture'].forEach(ev=>b.addEventListener(ev,()=>{
+  if(isEditingControls)return;
+  K[k]=0;
+ }));
+ initBtnDrag(b);
+});
+
 gen();fit();spawn();show('main');
+applyBtnPos();applyBtnIcons();
+
 let last=0,acc=0;
 function loop(t){acc+=Math.min(50,t-last);last=t;while(acc>=16.67){update();acc-=16.67}draw();requestAnimationFrame(loop)}
 requestAnimationFrame(t=>{last=t;loop(t)});
