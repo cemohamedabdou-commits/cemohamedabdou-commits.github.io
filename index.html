@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>مغامرة النجمة — لعبة منصّات مجانية بالعربية (30 مرحلة)</title>
-<meta name="description" content="لعبة منصّات مجانية بالعربية تشبه ماريو: 30 مرحلة، زعماء، أنابيب سرية، باورابس، ومتجر سكينات.">
+<title>مغامرة النجمة — لعبة منصّات مجانية بالعربية (40 مرحلة)</title>
+<meta name="description" content="لعبة منصّات مجانية بالعربية تشبه ماريو: 40 مرحلة، زعماء، أنابيب سرية، باورابس، ومتجر سكينات.">
 <meta name="theme-color" content="#141833">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -93,6 +93,7 @@ function fit(){
 addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,250));
 function setState(s){state=s;stT=performance.now()}
 
+// قائمة المراحل الـ 40 الموسعة
 const TH=[
 {n:'المروج',dk:1,D:[.18,0,.28,.8,220],s:['#3f9bf5','#a9dcff','#d8f1ff'],h1:'#86d8a8',h2:'#4fb56e',gr:'#3fae4f',sun:'#fff3b0'},
 {n:'الغروب',dk:2,D:[.22,1,.32,.9,235],s:['#ff7e5f','#feb47b','#ffe0a8'],h1:'#c77dac',h2:'#8e5a9b',gr:'#7bbf4a',sun:'#ffe9b0'},
@@ -107,34 +108,64 @@ const TH=[
 {n:'الشاطئ',dk:2,D:[.22,1,.34,.9,280],s:['#2aa8e8','#8fd8ff','#fff1c9'],h1:'#f0d890',h2:'#e0c070',gr:'#f0d27a',sun:'#fff3b0'},
 {n:'الخريف',dk:2,D:[.24,1,.38,.95,295],s:['#e08a3a','#f6c27a','#fff0d0'],h1:'#c9733a',h2:'#a35528',gr:'#c98a2e',sun:'#fff0b0'},
 {n:'الجليد',dk:3,D:[.28,2,.44,1.05,310],s:['#5aa0e0','#b8dcff','#eef8ff'],h1:'#b7d8f0',h2:'#8fbfe0',gr:'#d8f0ff',sun:'#ffffff'},
-{n:'المستنقع',dk:3,D:[.3,2,.46,1.1,325],s:['#2a4a3a','#4d7a5a','#9cc8a8'],h1:'#3a6a4a',h2:'#2a5038',gr:'#5a8a3a',sun:'#d8ffb0'},
+{n:'المستنقع',dk:3,D:[.3,2,.46,1.1,320],s:['#2a4a3a','#4d7a5a','#9cc8a8'],h1:'#3a6a4a',h2:'#2a5038',gr:'#5a8a3a',sun:'#d8ffb0'},
 {n:'الفضاء',boss:6,dk:4,D:[.34,2,.52,1.15,350],s:['#05010f','#150a3a','#2a1a6a'],h1:'#2a1a5a',h2:'#1a0f40',gr:'#8a6aff',sun:'#fff0ff'},
 {n:'الأطلال',dk:2,D:[.24,1,.36,.95,305],s:['#c9a56a','#e8cfa0','#f8ecd0'],h1:'#b89060',h2:'#9a7448',gr:'#b8955a',sun:'#fff7d0'},
 {n:'العاصفة',dk:4,D:[.32,2,.54,1.2,325],s:['#2a3140','#4a5568','#7a8a9e'],h1:'#4a5a70',h2:'#36445a',gr:'#5a8a6a',sun:'#e0e8ff'},
 {n:'المصنع',dk:4,D:[.34,2,.56,1.25,340],s:['#3a2a20','#6a4a30','#b07a4a'],h1:'#5a4030',h2:'#3a2a20',gr:'#8a8a8a',sun:'#ffcc88'},
 {n:'النجوم',dk:5,D:[.36,2,.58,1.3,360],s:['#0a0a2a','#2a1a5a','#6a3a9a'],h1:'#3a2a7a',h2:'#2a1a5a',gr:'#ffd23f',sun:'#ffffff'},
 {n:'العرش',boss:8,dk:5,D:[.38,2,.62,1.4,390],s:['#1a0505','#5a1010','#c02a1a'],h1:'#3a0a0a',h2:'#240505',gr:'#d4a017',sun:'#ffd0a0'},
-{n:'الشعاب',dk:3,D:[.28,2,.44,1.05,325],s:['#0e7fa8','#4fc3e8','#bff0ff'],h1:'#2aa6c0',h2:'#1b7f9a',gr:'#3ad0a8',sun:'#e8ffff'},
-{n:'الكريستال',dk:4,D:[.32,2,.5,1.15,345],s:['#2a1a5a','#5a3a9a','#a07ae8'],h1:'#6a4ab8',h2:'#4a2a98',gr:'#b88aff',sun:'#ffe8ff'},
-{n:'الجبال',dk:3,D:[.3,2,.46,1.05,335],s:['#6a8ab0','#b8cde4','#f0f6fc'],h1:'#9ab0c8',h2:'#7a92b0',gr:'#e8f0f8',sun:'#ffffff'},
-{n:'الصدأ',dk:4,D:[.34,2,.54,1.2,360],s:['#4a2a1a','#8a5a2a','#d09a5a'],h1:'#7a4a2a',h2:'#5a3418',gr:'#a8743a',sun:'#ffcf9a'},
-{n:'قلعة الجليد',boss:9,dk:5,D:[.36,2,.6,1.25,400],s:['#1a3050','#3a6a9a','#9ac8f0'],h1:'#5a8ab8',h2:'#3a6a98',gr:'#d0ecff',sun:'#ffffff'},
-{n:'الغيوم الوردية',dk:2,D:[.26,1,.4,.95,345],s:['#f08ab8','#ffc4dc','#fff0f6'],h1:'#ffd0e4',h2:'#f0a8c8',gr:'#ffffff',sun:'#fff6c0'},
-{n:'المناجم',dk:4,D:[.34,2,.56,1.2,370],s:['#1a1410','#3a2a1a','#6a4a2a'],h1:'#4a3420',h2:'#2e2010',gr:'#c8a24a',sun:'#ffcc66'},
-{n:'المدينة',dk:4,D:[.35,2,.58,1.25,390],s:['#0a1a3a','#1a3a6a','#3a6aa8'],h1:'#1a2f58',h2:'#10203e',gr:'#9aa8c0',sun:'#fff4cc'},
-{n:'مدار القمر',dk:5,D:[.36,2,.62,1.3,415],s:['#02020a','#0a0a2a','#1a1a4a'],h1:'#1a1a3a',h2:'#10102a',gr:'#c0c0d8',sun:'#e8e8ff'},
-{n:'الملك الأخير',boss:12,dk:5,D:[.4,2,.68,1.45,450],s:['#0a0008','#3a0a2a','#8a1a4a'],h1:'#2a0a1a',h2:'#1a0510',gr:'#ffd23f',sun:'#ffb0d0'}
+{n:'الشعاب',dk:3,D:[.28,2,.44,1.05,320],s:['#0e7fa8','#4fc3e8','#bff0ff'],h1:'#2aa6c0',h2:'#1b7f9a',gr:'#3ad0a8',sun:'#e8ffff'},
+{n:'الكريستال',dk:4,D:[.32,2,.5,1.15,340],s:['#2a1a5a','#5a3a9a','#a07ae8'],h1:'#6a4ab8',h2:'#4a2a98',gr:'#b88aff',sun:'#ffe8ff'},
+{n:'الجبال',dk:3,D:[.3,2,.46,1.05,330],s:['#6a8ab0','#b8cde4','#f0f6fc'],h1:'#9ab0c8',h2:'#7a92b0',gr:'#e8f0f8',sun:'#ffffff'},
+{n:'الصدأ',dk:4,D:[.34,2,.54,1.2,350],s:['#4a2a1a','#8a5a2a','#d09a5a'],h1:'#7a4a2a',h2:'#5a3418',gr:'#a8743a',sun:'#ffcf9a'},
+{n:'قلعة الجليد',boss:9,dk:5,D:[.36,2,.6,1.25,390],s:['#1a3050','#3a6a9a','#9ac8f0'],h1:'#5a8ab8',h2:'#3a6a98',gr:'#d0ecff',sun:'#ffffff'},
+{n:'الغيوم الوردية',dk:2,D:[.26,1,.4,.95,340],s:['#f08ab8','#ffc4dc','#fff0f6'],h1:'#ffd0e4',h2:'#f0a8c8',gr:'#ffffff',sun:'#fff6c0'},
+{n:'المناجم',dk:4,D:[.34,2,.56,1.2,360],s:['#1a1410','#3a2a1a','#6a4a2a'],h1:'#4a3420',h2:'#2e2010',gr:'#c8a24a',sun:'#ffcc66'},
+{n:'المدينة',dk:4,D:[.35,2,.58,1.25,380],s:['#0a1a3a','#1a3a6a','#3a6aa8'],h1:'#1a2f58',h2:'#10203e',gr:'#9aa8c0',sun:'#fff4cc'},
+{n:'مدار القمر',dk:5,D:[.36,2,.62,1.3,400],s:['#02020a','#0a0a2a','#1a1a4a'],h1:'#1a1a3a',h2:'#10102a',gr:'#c0c0d8',sun:'#e8e8ff'},
+{n:'الملك الأخير',boss:12,dk:5,D:[.4,2,.68,1.45,430],s:['#0a0008','#3a0a2a','#8a1a4a'],h1:'#2a0a1a',h2:'#1a0510',gr:'#ffd23f',sun:'#ffb0d0'},
+// المراحل الجديدة (31 إلى 40)
+{n:'نيون سايبر',dk:4,D:[.33,2,.52,1.2,360],s:['#0f172a','#1e1b4b','#311042'],h1:'#3b0764',h2:'#1e1b4b',gr:'#06b6d4',sun:'#38bdf8'},
+{n:'أرض الأساطير',dk:3,D:[.28,1,.45,1.05,340],s:['#451a03','#78350f','#b45309'],h1:'#92400e',h2:'#78350f',gr:'#fbbf24',sun:'#fef08a'},
+{n:'كهف الزمرد',dk:4,D:[.34,2,.54,1.2,370],s:['#022c22','#064e3b','#065f46'],h1:'#047857',h2:'#064e3b',gr:'#10b981',sun:'#6ee7b7'},
+{n:'بركان الظلام',dk:5,D:[.36,2,.58,1.3,390],s:['#18181b','#27272a','#3f3f46'],h1:'#581c87',h2:'#3b0764',gr:'#a855f7',sun:'#d8b4fe'},
+{n:'عرش التنين',boss:14,dk:5,D:[.4,2,.68,1.4,440],s:['#450a0a','#7f1d1d','#991b1b'],h1:'#581c87',h2:'#3b0764',gr:'#f59e0b',sun:'#fbbf24'},
+{n:'واحة السراب',dk:3,D:[.3,1,.46,1.1,350],s:['#0c4a6e','#075985','#0284c7'],h1:'#0369a1',h2:'#075985',gr:'#38bdf8',sun:'#e0f2fe'},
+{n:'بحر النجوم',dk:4,D:[.35,2,.55,1.25,380],s:['#050515','#0f1035','#1c1a55'],h1:'#2e1065',h2:'#1e1b4b',gr:'#ec4899',sun:'#f472b6'},
+{n:'القلعة المسحورة',dk:5,D:[.38,2,.6,1.35,400],s:['#1c1917','#292524','#44403c'],h1:'#312e81',h2:'#1e1b4b',gr:'#818cf8',sun:'#c7d2fe'},
+{n:'أفق الشفق',dk:4,D:[.34,2,.56,1.25,390],s:['#311042','#581c87','#701a75'],h1:'#86198f',h2:'#701a75',gr:'#f43f5e',sun:'#fda4af'},
+{n:'سيد الأكوان',boss:16,dk:5,D:[.42,2,.7,1.5,460],s:['#030712','#111827','#1f2937'],h1:'#831843',h2:'#500724',gr:'#fbbf24',sun:'#fef08a'}
 ];
 
 const BT={n:'تحت الأرض',s:['#0a0f2a','#10204f','#1a2f6a'],h1:'#14306a',h2:'#0f2552',gr:'#2a56c8',sun:'#9ec5ff'},cur=()=>bonus?BT:TH[lv];
-const SK=[{n:'كلاسيكي',p:0,a:'#e53935',b:'#2a4fd6',c:'#e53935'},{n:'الأخضر',p:30,a:'#2e9e4f',b:'#1f5fbf',c:'#2e9e4f'},{n:'الأزرق',p:60,a:'#3b82f6',b:'#1e3a8a',c:'#3b82f6'},{n:'الوردي',p:100,a:'#ec4899',b:'#7e22ce',c:'#ec4899'},{n:'الذهبي',p:150,a:'#f5b800',b:'#a16207',c:'#f5b800'},{n:'النينجا',p:220,a:'#2b2b33',b:'#3d3d48',c:'#2b2b33',ninja:1},{n:'الفضائي',p:300,a:'#7c5cff',b:'#3b2fa0',c:'#7c5cff',k:'#9be59b'},{n:'قوس قزح',p:450,rb:1}];
+
+// قائمة السكينات الموسعة بـ 14 سكيناً فريداً
+const SK=[
+{n:'كلاسيكي',p:0,a:'#e53935',b:'#2a4fd6',c:'#e53935'},
+{n:'الأخضر',p:30,a:'#2e9e4f',b:'#1f5fbf',c:'#2e9e4f'},
+{n:'الأزرق',p:60,a:'#3b82f6',b:'#1e3a8a',c:'#3b82f6'},
+{n:'الوردي',p:100,a:'#ec4899',b:'#7e22ce',c:'#ec4899'},
+{n:'الذهبي',p:150,a:'#f5b800',b:'#a16207',c:'#f5b800'},
+{n:'النينجا',p:220,a:'#2b2b33',b:'#3d3d48',c:'#2b2b33',ninja:1},
+{n:'الفضائي',p:300,a:'#7c5cff',b:'#3b2fa0',c:'#7c5cff',k:'#9be59b'},
+{n:'قوس قزح',p:450,rb:1},
+// السكينات الجديدة
+{n:'الشبح الأرجواني',p:550,a:'#7e22ce',b:'#3b0764',c:'#a855f7'},
+{n:'المحارب الناري',p:650,a:'#ea580c',b:'#9a3412',c:'#f97316'},
+{n:'المعدني الآلي',p:800,a:'#475569',b:'#1e293b',c:'#94a3b8',k:'#cbd5e1'},
+{n:'الأميرة الوردية',p:950,a:'#f43f5e',b:'#9f1239',c:'#fb7185',k:'#fde047'},
+{n:'الزمردي الملكي',p:1150,a:'#059669',b:'#064e3b',c:'#10b981',k:'#fef08a'},
+{n:'نجم المجرة',p:1400,a:'#0284c7',b:'#4338ca',c:'#38bdf8',rb:1}
+];
+
 function RNG(s){return()=>{s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
 
 function gen(){
  const R=RNG(lv*7919+13),D=TH[lv].D,LE=D[4]-(TH[lv].boss?44:24);cols=D[4];FX=(cols-6)*T;bonus=0;pw=null;mainSt=null;pipes=[];warps=[];
  map=Array.from({length:rows},()=>Array(cols).fill(0));coins=[];en=[];cps=[60];
  const gaps=[],cn=(a,b,r)=>{for(let q=a;q<=b;q++)coins.push({x:q*T+16,y:r*T+16})};
- const maxCps=Math.min(5,Math.max(3,Math.floor(cols/70)));
+ const maxCps=Math.min(6,Math.max(3,Math.floor(cols/70)));
  let i=10;
  pTimer=0;crumbled={};lavaY=H+100;
  const mk=()=>{const h=2+(R()*2|0);for(let k=12-h;k<12;k++){map[k][i]=5;map[k][i+1]=5}pipes.push({c:i,top:12-h});if(!warps.length||R()<.5)warps.push({c:i,top:12-h});cn(i,i+1,7);i+=7};
@@ -177,7 +208,7 @@ function gen(){
  for(let q=0;q<cols;q++)for(let r=0;r<rows;r++)if(map[r][q]===3||map[r][q]===8){const u=R();bc[r*1000+q]=nb<2?'p':u<.5?'c':u<.8?'p':u<.9?'s':'u';nb++}
  deco=[];efb=[];mp=[];
  for(const g of gaps){const w=g[1]-g[0]+1;if(w>=4||(w>=3&&R()<.5)){const cx=(g[0]+w/2)*T,t=R()<.3?'v':'h';mp.push({x:cx-48,y:t==='v'?9*T:10*T,w:96,h:14,x0:cx-48,y0:t==='v'?9*T:10*T,r:t==='v'?40:Math.min(34,(w*T-96)/2+30),t,ph:R()*300|0,dx:0,dy:0})}}
- const DPL={3:'P',12:'P',22:'P',24:'P',5:'C',15:'C',23:'C',6:'T',13:'T',11:'T',7:'R',14:'R',18:'R',9:'R',19:'R',17:'R',4:'R',16:'R',21:'R',26:'R',27:'R',28:'R',29:'R'}[lv]||'B';
+ const DPL={3:'P',12:'P',22:'P',24:'P',5:'C',15:'C',23:'C',6:'T',13:'T',11:'T',7:'R',14:'R',18:'R',9:'R',19:'R',17:'R',4:'R',16:'R',21:'R',26:'R',27:'R',28:'R',29:'R',30:'R',31:'R',32:'P',33:'R',34:'R',35:'C',36:'R',37:'R',38:'R',39:'R'}[lv]||'B';
  const KD={P:['pine','pine','rock'],C:['cactus','rock','cactus'],T:['tree','bush','flower'],R:['rock'],B:['bush','flower','bush','rock']}[DPL];
  for(let q=6;q<cols-17;q++)if(R()<.3&&map[12][q]===1&&!map[11][q]&&!map[11][q+1])deco.push({x:q*T+(R()*20|0),t:KD[R()*KD.length|0],s:.8+R()*.5});
  for(let j=22;j<LE-4;j+=19){const q=j+(R()*6|0);
@@ -199,10 +230,10 @@ function show(v){
  if(v)view=v;ui$.classList.add('on');
  const av=`<div class="av"><canvas width="112" height="128" data-i="${skIdx}"></canvas></div>`;
  let h='';
- if(view==='main')h=av+`<h1>⭐ مغامرة النجمة</h1><p>👤 ${pname} · 🪙 ${wal}</p>${sv?`<button class="bt" onclick="loadG()">⏩ متابعة المحفوظ — المرحلة ${sv.lv+1}</button>`:''}<button class="bt${sv?' s':''}" onclick="reset()">▶ ابدأ — المرحلة ${lv+1}: ${TH[lv].n}</button><button class="bt s" onclick="show('levels')">🗺️ المراحل</button><button class="bt s" onclick="show('shop')">🛍️ المتجر والسكينات</button><button class="bt s" onclick="show('ctrl')">🎮 حجم وتحكم الأزرار</button><button class="bt s" onclick="show('profile')">🏆 الملف الشخصي</button><button class="bt s" onclick="tog()">${mute?'🔇 الصوت مغلق':'🔊 الصوت مفتوح'}</button><p style="margin:10px 0 0;font-size:13px;opacity:.7"><a href="privacy.html" target="_blank" rel="noopener" style="color:#fff">سياسة الخصوصية</a></p>`;
+ if(view==='main')h=av+`<h1>⭐ مغامرة النجمة</h1><p>👤 ${pname} · 🪙 ${wal}</p>${sv?`<button class="bt" onclick="loadG()">⏩ متابعة المحفوظ — المرحلة ${sv.lv+1}</button>`:''}<button class="bt${sv?' s':''}" onclick="reset()">▶ ابدأ — المرحلة ${lv+1}: ${TH[lv].n}</button><button class="bt s" onclick="show('levels')">🗺️ المراحل (40)</button><button class="bt s" onclick="show('shop')">🛍️ المتجر والسكينات</button><button class="bt s" onclick="show('ctrl')">🎮 حجم وتحكم الأزرار</button><button class="bt s" onclick="show('profile')">🏆 الملف الشخصي</button><button class="bt s" onclick="tog()">${mute?'🔇 الصوت مغلق':'🔊 الصوت مفتوح'}</button><p style="margin:10px 0 0;font-size:13px;opacity:.7"><a href="privacy.html" target="_blank" rel="noopener" style="color:#fff">سياسة الخصوصية</a></p>`;
  else if(view==='pause')h=`<h1>⏸ إيقاف مؤقت</h1><p>${TH[lv].n} — 🪙 ${n} · ⭐ ${score} · ❤️ ${lives}</p>${msg?`<p>${msg}</p>`:''}<button class="bt" onclick="resumeG()">▶ متابعة</button><button class="bt s" onclick="saveG()">💾 حفظ التقدم</button><button class="bt s" onclick="show('main')">🏠 الرئيسية</button><button class="bt s" onclick="tog()">${mute?'🔇 الصوت مغلق':'🔊 الصوت مفتوح'}</button>`;
  else if(view==='profile')h=`<h1>الملف الشخصي</h1>`+av+`<input class="in" maxlength="12" value="${pname}" onchange="setName(this.value)"><div class="gr">`+[['🏆','أعلى نقاط',st.b],['🗺️','المراحل المفتوحة',(unl+1)+'/'+TH.length],['🪙','عملات جمعتها',st.c],['👾','أعداء هزمتهم',st.k],['🎮','عدد المحاولات',st.g],['🛍️','السكينات',own.length+'/'+SK.length],['⭐','نجوم المراحل',Object.values(stars).reduce((a,b)=>a+b,0)+'/'+TH.length*3]].map(a=>`<div class="cd"><b>${a[0]} ${a[2]}</b><small>${a[1]}</small></div>`).join('')+`</div><button class="bt s" onclick="show('main')">رجوع</button>`;
- else if(view==='levels')h=`<h1>المراحل</h1><div class="gr">`+TH.map((t,i)=>`<button class="bt ${i===lv?'':'s'}" ${i>unl?'disabled':''} onclick="lv=${i};show('main')">${i>unl?'🔒':i+1}<br><small>${t.n}</small><br><small>${'🔥'.repeat(t.dk)}</small><br><small style="color:#ffd23f">${'★'.repeat(stars[i]|0)}${'☆'.repeat(3-(stars[i]|0))}</small></button>`).join('')+`</div><button class="bt s" onclick="show('main')">رجوع</button>`;
+ else if(view==='levels')h=`<h1>المراحل (40)</h1><div class="gr">`+TH.map((t,i)=>`<button class="bt ${i===lv?'':'s'}" ${i>unl?'disabled':''} onclick="lv=${i};show('main')">${i>unl?'🔒':i+1}<br><small>${t.n}</small><br><small>${'🔥'.repeat(t.dk)}</small><br><small style="color:#ffd23f">${'★'.repeat(stars[i]|0)}${'☆'.repeat(3-(stars[i]|0))}</small></button>`).join('')+`</div><button class="bt s" onclick="show('main')">رجوع</button>`;
  else if(view==='shop')h=`<h1>المتجر</h1><p>🪙 ${wal} عملة</p><div class="gr">`+SK.map((k,i)=>`<div class="cd ${i===skIdx?'sel':''}"><canvas width="112" height="128" data-i="${i}"></canvas><b>${k.n}</b>`+(own.includes(i)?`<button class="bt ${i===skIdx?'s':''}" onclick="pick(${i})">${i===skIdx?'مستخدم':'اختيار'}</button>`:`<button class="bt s" ${wal<k.p?'disabled':''} onclick="buy(${i})">🪙 ${k.p}</button>`)+`</div>`).join('')+`</div><button class="bt s" onclick="show('main')">رجوع</button>`;
  else if(view==='ctrl'){
   h=`<h1>🎮 حجم أزرار التحكم</h1>
@@ -228,8 +259,8 @@ function show(v){
    <div style="font-size:17px;font-weight:800;color:#a9dcff">${nxtName}</div>`:''}
   </div>
   ${(pwrName||lives>1)?`<p style="margin:4px 0 8px;font-size:13px;color:#7fcf9f;background:#2e9e4f26;border:1px solid #2e9e4f66;padding:6px 10px;border-radius:10px">⚡ سينتقل معك إلى المرحلة التالية: ${pwrName?pwrName+' · ':''}❤️ ${lives} قلوب</p>`:''}
-  <p>النقاط: ${score} · 🪙 ${cg}/${ctot} · ❤️ ${lives}</p>`+
-  (last?`<p>أنهيت كل المراحل! 🏆</p>`:`<button class="bt" onclick="nextStage()">المرحلة التالية: ${TH[lv+1].n} ▶</button>`)+
+  <p>النقاط: ${score} · 🪙 ${cg}/${ctot} · ❤️️ ${lives}</p>`+
+  (last?`<p>أنهيت كل المراحل الـ 40 بنجاح! 🏆 أسطورة النجمة!</p>`:`<button class="bt" onclick="nextStage()">المرحلة التالية: ${TH[lv+1].n} ▶</button>`)+
   `<button class="bt s" onclick="reset()">أعد المرحلة</button><button class="bt s" onclick="show('main')">القائمة</button>`;
  }
  else h=`<h1>انتهت اللعبة</h1><p>النقاط: ${score}</p><button class="bt" onclick="reset()">حاول مجدداً</button><button class="bt s" onclick="show('main')">القائمة</button>`;
@@ -283,7 +314,7 @@ function swap(){
   map=Array.from({length:rows},()=>Array(26).fill(0));
   for(let q=0;q<26;q++){map[12][q]=1;map[13][q]=1;map[0][q]=2}
   for(let r=1;r<12;r++){map[r][0]=2;map[r][25]=2}
-  for(const r of[10,11])map[r][22]=map[r][23]=5;
+  for(const r of [10,11])map[r][22]=map[r][23]=5;
   coins=[];for(let r=7;r<=10;r++)for(let q=4;q<=19;q++)coins.push({x:q*T+16,y:r*T+16});
   en=[];cols=26;FX=99999;cps=[60];p.x=3*T;p.y=44;p.vy=0;p.vx=0;cam=0;pw.top=null;pw.rise=0;wcd=40;
  }else{
@@ -406,7 +437,7 @@ function itemStep(it){
 }
 function tog(){mute=!mute;save();show()}
 function popup(X,Y,t,c){fl.push({x:X,y:Y,t,l:55,c})}
-const WXT={2:'fly',3:'snow',4:'ember',5:'dust',6:'fly',8:'wind',9:'ember',11:'leaf',12:'snow',13:'fly',15:'dust',16:'wind',17:'ember',19:'ember',21:'fly',22:'snow',23:'dust',24:'snow',26:'ember',27:'rain',28:'fly',29:'ember'};
+const WXT={2:'fly',3:'snow',4:'ember',5:'dust',6:'fly',8:'wind',9:'ember',11:'leaf',12:'snow',13:'fly',15:'dust',16:'wind',17:'ember',19:'ember',21:'fly',22:'snow',23:'dust',24:'snow',26:'ember',27:'rain',28:'fly',29:'ember',31:'dust',33:'fly',34:'ember',36:'dust',37:'fly',39:'leaf'};
 function wxInit(){wx=WXT[lv]?Array.from({length:42},()=>({x:Math.random()*W,y:Math.random()*H,s:.5+Math.random(),p:Math.random()*6})):[]}
 function wxStep(){
  const t=WXT[lv];if(!t||bonus)return;for(const o of wx){
@@ -431,10 +462,10 @@ function wxDraw(){
  }
  x.restore();
 }
-const DIRT=['#a85a1c','#9a4f3a','#7a5a3a','#6a7a96','#5a2a1a','#c99a5a','#6b4a2a','#3a2f55','#bcd0e6','#5a5a66','#d8b878','#8a5226','#a5c4de','#4a3a2a','#2a2a55','#a88a5a','#3a3f4a','#4a3a30','#2a1f55','#3a1010','#2a8a9a','#4a2a7a','#7a8aa8','#7a4a24','#5a7aa0','#e8a0c0','#4a3a28','#3a4a6a','#4a4a62','#3a0a22'];
-const LIQ={4:['#ff5a1a','#ffb347'],9:['#ff5a1a','#ffb347'],17:['#ff5a1a','#ffb347'],19:['#ff5a1a','#ffb347'],13:['#6ad04a','#c8f08a'],7:['#7a5cff','#c0aaff'],14:null,18:null,21:['#a07ae8','#e0c8ff'],23:['#b86a2a','#e0a860'],26:['#ff7a1a','#ffd23f'],29:['#ff5a1a','#ffb347'],25:null,28:null};
+const DIRT=['#a85a1c','#9a4f3a','#7a5a3a','#6a7a96','#5a2a1a','#c99a5a','#6b4a2a','#3a2f55','#bcd0e6','#5a5a66','#d8b878','#8a5226','#a5c4de','#4a3a2a','#2a2a55','#a88a5a','#3a3f4a','#4a3a30','#2a1f55','#3a1010','#2a8a9a','#4a2a7a','#7a8aa8','#7a4a24','#5a7aa0','#e8a0c0','#4a3a28','#3a4a6a','#4a4a62','#3a0a22','#1e1b4b','#78350f','#064e3b','#27272a','#7f1d1d','#075985','#1e1b4b','#292524','#701a75','#111827'];
+const LIQ={4:['#ff5a1a','#ffb347'],9:['#ff5a1a','#ffb347'],17:['#ff5a1a','#ffb347'],19:['#ff5a1a','#ffb347'],13:['#6ad04a','#c8f08a'],7:['#7a5cff','#c0aaff'],14:null,18:null,21:['#a07ae8','#e0c8ff'],23:['#b86a2a','#e0a860'],26:['#ff7a1a','#ffd23f'],29:['#ff5a1a','#ffb347'],33:['#10b981','#6ee7b7'],34:['#a855f7','#d8b4fe'],35:['#ef4444','#f87171'],39:['#f43f5e','#fda4af'],25:null,28:null};
 function birds(){
- if(bonus||![0,1,5,10,11,25].includes(lv))return;x.strokeStyle='#2a3a5a';x.lineWidth=1.6;
+ if(bonus||![0,1,5,10,11,25,32,36].includes(lv))return;x.strokeStyle='#2a3a5a';x.lineWidth=1.6;
  for(let i=0;i<4;i++){const M=W+200,bx=(((i*300-fr*.6-cam*.1)%M)+M)%M-100,by=70+i*28+Math.sin(fr*.03+i)*8,w=Math.sin(fr*.2+i)*4;
   x.beginPath();x.moveTo(bx-8,by-w);x.quadraticCurveTo(bx-4,by-3,bx,by);x.quadraticCurveTo(bx+4,by-3,bx+8,by-w);x.stroke()}
 }
@@ -484,7 +515,7 @@ function ebStep(){
   if(b.l>0&&hit(p,{x:b.x-6,y:b.y-6,w:12,h:12})){b.l=0;if(hurt())return true}}
  efb=efb.filter(b=>b.l>0);return false;
 }
-const ICE=new Set([3,12,22,24]),LOWG=new Set([14,18,28]);
+const ICE=new Set([3,12,22,24,32]),LOWG=new Set([14,18,28,37]);
 function mpStep(){for(const m of mp){m.ph++;const q=Math.sin(m.ph*.025),nx=m.t==='h'?m.x0+q*m.r:m.x0,ny=m.t==='v'?m.y0+q*m.r:m.y0;m.dx=nx-m.x;m.dy=ny-m.y;m.x=nx;m.y=ny}}
 function mpLand(){for(const m of mp){
  if(p.vy>=0&&p.x+p.w>m.x&&p.x<m.x+m.w&&p.y+p.h>=m.y-6&&p.y+p.h-p.vy<=m.y+8+Math.abs(m.dy)){p.y=m.y-p.h;p.vy=0;p.on=true;p.x+=m.dx;break}}}
@@ -588,7 +619,7 @@ function figure(g,s,lg,on){
 }
 function drawLiq(){
  const l=LIQ[lv]===null?null:(LIQ[lv]||['#2a8fe0','#8fd8ff']);if(!l||bonus)return;
- const lava=[4,9,17,19,26,29].includes(lv),y0=lava?Math.min(H-42,lavaY):H-42,wy=(i,k)=>y0+Math.sin((i+cam)*.05+fr*.08+k)*3+Math.sin((i+cam)*.11-fr*.05)*1.5;
+ const lava=[4,9,17,19,26,29,33,34,35,39].includes(lv),y0=lava?Math.min(H-42,lavaY):H-42,wy=(i,k)=>y0+Math.sin((i+cam)*.05+fr*.08+k)*3+Math.sin((i+cam)*.11-fr*.05)*1.5;
  const gr=x.createLinearGradient(0,y0-4,0,H);gr.addColorStop(0,l[1]);gr.addColorStop(.25,l[0]);gr.addColorStop(1,shade(l[0],-.55));
  x.fillStyle=gr;x.beginPath();x.moveTo(0,H);for(let i=0;i<=W;i+=6)x.lineTo(i,wy(i,0));x.lineTo(W,H);x.fill();
  x.lineWidth=2;x.strokeStyle=l[1];x.beginPath();for(let i=0;i<=W;i+=6){i?x.lineTo(i,wy(i,0)):x.moveTo(i,wy(i,0))}x.stroke();
@@ -733,7 +764,7 @@ function update(){
   }
  }
 
- const lava=[4,9,17,19,26,29].includes(lv);
+ const lava=[4,9,17,19,26,29,33,34,35,39].includes(lv);
  if(lava&&lavaY>H-80)lavaY-=0.1;
 
  if((lv===8||lv===16)&&!bonus)p.vx+=Math.sin(fr*0.02)*0.18;
@@ -795,7 +826,7 @@ function drawP(){
 function draw(){
  x.setTransform(S,0,0,S,0,0);const th=cur();if(shk>.3)x.translate((Math.random()-.5)*shk,(Math.random()-.5)*shk);
  const g=x.createLinearGradient(0,0,0,H);g.addColorStop(0,th.s[0]);g.addColorStop(.7,th.s[1]);g.addColorStop(1,th.s[2]);x.fillStyle=g;x.fillRect(0,0,W,H);
- sunDraw(th);if([2,7,14,18,28].includes(lv)||bonus){x.fillStyle='#fff';for(let i=0;i<50;i++)x.fillRect(((i*137-cam*.05)%W+W)%W,(i*53)%260,2,2)}
+ sunDraw(th);if([2,7,14,18,28,30,33,36,37].includes(lv)||bonus){x.fillStyle='#fff';for(let i=0;i<50;i++)x.fillRect(((i*137-cam*.05)%W+W)%W,(i*53)%260,2,2)}
  x.fillStyle='#ffffffe0';
  for(let i=0;i<9;i++){const M=W+240,cx=(((i*260-cam*.25)%M)+M)%M-120;cloud(cx,46+(i*41)%100,.8+(i%3)*.25)}
  mtns(th);hills(cam*.2,th.h1,34,330);hills(cam*.45+200,th.h2,30,372);
@@ -844,16 +875,16 @@ requestAnimationFrame(t=>{last=t;loop(t)});
 </script>
 
 <script>
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistrations().then(regs => {
-    for (let reg of regs) { reg.update(); }
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    for(let reg of regs){reg.update();}
   });
 }
-if ('caches' in window) {
-  caches.keys().then(keys => {
-    if (!localStorage.getItem('sa_clean_v4')) {
-      keys.forEach(k => caches.delete(k));
-      localStorage.setItem('sa_clean_v4', '1');
+if('caches' in window){
+  caches.keys().then(keys=>{
+    if(!localStorage.getItem('sa_clean_v5')){
+      keys.forEach(k=>caches.delete(k));
+      localStorage.setItem('sa_clean_v5','1');
     }
   });
 }
