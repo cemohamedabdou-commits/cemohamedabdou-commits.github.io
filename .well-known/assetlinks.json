@@ -1,0 +1,13 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.cemohamedabdou_commits.staradventure",
+      "sha256_cert_fingerprints": [
+        "B8:1D:80:F4:3D:0F:48:81:C7:1C:6D:45:81:04:E0:88:60:73:B0:E7:8D:99:A2:D9:E6:B7:DE:25:C7:07:9D:2E",
+        "7E:97:A3:44:B5:72:B7:71:E0:F5:63:65:5C:EC:50:95:51:AC:24:71:6E:CC:48:D5:30:04:05:22:6E:E8:F3:2F"
+      ]
+    }
+  }
+]
