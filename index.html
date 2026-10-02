@@ -66,7 +66,7 @@ canvas{border-radius:14px;background:#4aa8ff;display:block;box-shadow:0 8px 30px
 <canvas id="c"></canvas>
 <button id="mb" tabindex="-1">⏸</button><div id="ui"><div class="pn" id="pn"></div></div>
 
-<!-- شريط وضع تعديل الأزرار -->
+<!-- شريط وضع تعديل الأزرار بالسحب -->
 <div id="edbar" style="display:none;position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);left:50%;transform:translateX(-50%);background:#1c2350ee;border:2px solid #ffd23f;border-radius:16px;padding:8px 14px;z-index:9999;text-align:center;box-shadow:0 6px 20px #0008;max-width:92%;width:420px;direction:rtl">
  <div style="font-weight:800;font-size:14px;color:#ffd23f;margin-bottom:6px">🛠️ اسحب أي زر لمكانه المفضل على الشاشة</div>
  <div style="display:flex;gap:6px;justify-content:center">
@@ -90,14 +90,153 @@ canvas{border-radius:14px;background:#4aa8ff;display:block;box-shadow:0 8px 30px
 <div class="rot">🔄 للحصول على أفضل تجربة اقلب الهاتف أفقيًا</div>
 <div class="hint">الأسهم أو A/D للحركة · مسافة للقفز (اضغط أطول = قفزة أعلى) · ↓ للنزول داخل الأنابيب · X للنار 🔥</div>
 <script>
-// تهيئة المتغيرات الأساسية أولاً لتفادي أي خطأ زمني
-var isEditingControls=false,dragBtn=null,dragOffX=0,dragOffY=0;
-var btnPos=null,btnIcons={};
-const defIcons={l:'◀',r:'▶',d:'▼',j:'⬆',a:'🔥'};
+// تهيئة المتغيرات الأساسية فوراً لمنع أي خطأ زمني عند بدء التشغيل
+var isEditingControls = false, dragBtn = null, dragOffX = 0, dragOffY = 0;
+var btnPos = null, btnIcons = {};
+const defIcons = { l: '◀', r: '▶', d: '▼', j: '⬆', a: '🔥' };
 
-const c=document.getElementById('c'),x=c.getContext('2d'),T=32,H=448,rows=14,F='Cairo,system-ui,sans-serif';
-let cols=240,FX=234*T,lv=0,unl=0,wal=0,skIdx=0,own=[0],cps=[60],lt=0,view='main',pname='لاعب',st={k:0,c:0,g:0,b:0};
-let warps=[],pipes=[],pw=null,bonus=0,mainSt=null,wcd=0,bc={},items=[],fbs=[],efb=[],deco=[],mp=[],fl=[],shk=0,combo=0,wx=[],ws=0,cg=0,ctot=1,stars={},mute=false;
+const c = document.getElementById('c'), x = c.getContext('2d'), T = 32, H = 448, rows = 14, F = 'Cairo,system-ui,sans-serif';
+let cols = 220, FX = 214 * T, lv = 0, unl = 0, wal = 0, skIdx = 0, own = [0], cps = [60], lt = 0, view = 'main', pname = 'لاعب', st = { k: 0, c: 0, g: 0, b: 0 };
+let warps = [], pipes = [], pw = null, bonus = 0, mainSt = null, wcd = 0, bc = {}, items = [], fbs = [], efb = [], deco = [], mp = [], fl = [], shk = 0, combo = 0, wx = [], ws = 0, cg = 0, ctot = 1, stars = {}, mute = false;
+let W = 800, S = 1;
+const K = { l: 0, r: 0, j: 0, d: 0, a: 0 };
+let map, coins, en, p, cam = 0, state = 'start', stT = 0, score = 0, n = 0, lives = 3, cp = 60, inv = 0, fr = 0, buf = 0, dying = 0, parts = [], bt = {};
+const AC = window.AudioContext ? new AudioContext() : null;
+
+function applyBtnPos() {
+ if (!btnPos) {
+  document.querySelectorAll('.b').forEach(b => { b.style.position = ''; b.style.left = ''; b.style.top = ''; b.style.zIndex = ''; });
+  return;
+ }
+ document.querySelectorAll('.b').forEach(b => {
+  const k = b.dataset.k, pos = btnPos[k];
+  if (pos && typeof pos.left === 'number' && typeof pos.top === 'number') {
+   b.style.position = 'fixed';
+   b.style.left = Math.max(6, Math.min(innerWidth - b.offsetWidth - 6, pos.left)) + 'px';
+   b.style.top = Math.max(6, Math.min(innerHeight - b.offsetHeight - 6, pos.top)) + 'px';
+   b.style.zIndex = '3';
+  }
+ });
+}
+
+function applyBtnIcons() {
+ document.querySelectorAll('.b').forEach(b => {
+  const k = b.dataset.k, url = btnIcons[k];
+  const txt = b.querySelector('.btxt'), img = b.querySelector('.bimg');
+  if (url) {
+   if (txt) txt.style.display = 'none';
+   if (img) { img.src = url; img.style.display = 'inline-block'; }
+  } else {
+   if (txt) txt.style.display = '';
+   if (img) img.style.display = 'none';
+  }
+ });
+}
+
+function beep(f, d = .1, t = 'square', v = .04) { if (!AC || mute) return; try { const o = AC.createOscillator(), g = AC.createGain(); o.type = t; o.frequency.value = f; g.gain.value = v; g.gain.exponentialRampToValueAtTime(.001, AC.currentTime + d); o.connect(g); g.connect(AC.destination); o.start(); o.stop(AC.currentTime + d) } catch (e) { } }
+
+function fit() {
+ W = innerHeight > innerWidth ? 540 : 800;
+ const pad = document.querySelector('.pad'), hint = document.querySelector('.hint');
+ const touch = matchMedia('(hover:none) and (pointer:coarse)').matches, ov = touch && innerWidth > innerHeight; pad.classList.toggle('ov', ov);
+ const res = ov ? 8 : (pad.offsetHeight || hint.offsetHeight || 0) + (document.querySelector('.rot').offsetHeight || 0) + 36;
+ const cw = Math.floor(Math.min(innerWidth - 8, (innerHeight - res) * W / H, 1100)), ch = Math.floor(cw * H / W), d = Math.min(devicePixelRatio || 1, 3);
+ c.style.width = cw + 'px'; c.style.height = ch + 'px'; c.width = Math.round(cw * d); c.height = Math.round(ch * d); S = c.width / W;
+ if (!isEditingControls) applyBtnPos();
+}
+addEventListener('resize', fit); addEventListener('orientationchange', () => setTimeout(fit, 250));
+function setState(s) { state = s; stT = performance.now() }
+
+// العوالم الـ 30 مع زيادة الأطوال بأكثر من الضعف
+const TH = [
+{ n: 'المروج', dk: 1, D: [.18, 0, .28, .8, 220], s: ['#3f9bf5', '#a9dcff', '#d8f1ff'], h1: '#86d8a8', h2: '#4fb56e', gr: '#3fae4f', sun: '#fff3b0' },
+{ n: 'الغروب', dk: 2, D: [.22, 1, .32, .9, 235], s: ['#ff7e5f', '#feb47b', '#ffe0a8'], h1: '#c77dac', h2: '#8e5a9b', gr: '#7bbf4a', sun: '#ffe9b0' },
+{ n: 'الليل', dk: 2, D: [.24, 1, .35, .95, 250], s: ['#0b1030', '#26306b', '#4a5aa0'], h1: '#2c3a7a', h2: '#1f2a5e', gr: '#3aa86a', sun: '#e8ecff' },
+{ n: 'الثلج', dk: 3, D: [.26, 2, .4, 1, 265], s: ['#8ec5ff', '#d6ecff', '#f4faff'], h1: '#cfe6f7', h2: '#a8c9e6', gr: '#e8f6ff', sun: '#ffffff' },
+{ n: 'البركان', boss: 3, dk: 4, D: [.3, 2, .48, 1.1, 290], s: ['#3b0d0d', '#8a2a10', '#e0651c'], h1: '#5a1a10', h2: '#3a0f0a', gr: '#c9552a', sun: '#ffb060' },
+{ n: 'الصحراء', dk: 1, D: [.2, 1, .3, .85, 260], s: ['#f6b94a', '#ffd98a', '#fff1c9'], h1: '#e8b36a', h2: '#d19a4e', gr: '#e0b05a', sun: '#fff7d0' },
+{ n: 'الغابة', dk: 3, D: [.26, 2, .42, 1.05, 280], s: ['#2d8f6f', '#7fcf9f', '#cdeed8'], h1: '#2f8a58', h2: '#1f6b43', gr: '#2e9e4f', sun: '#f4ffd0' },
+{ n: 'الكهف', dk: 4, D: [.3, 2, .48, 1.15, 295], s: ['#17121f', '#2b2140', '#3d2f5c'], h1: '#3a2d55', h2: '#291f40', gr: '#7a5cc8', sun: '#bfa8ff' },
+{ n: 'السماء', dk: 4, D: [.32, 2, .46, 1.2, 310], s: ['#6fb7ff', '#bfe3ff', '#ffffff'], h1: '#e8f4ff', h2: '#cfe6fa', gr: '#ffffff', sun: '#ffffff' },
+{ n: 'القلعة', boss: 5, dk: 5, D: [.35, 2, .56, 1.3, 335], s: ['#1a1020', '#4a2040', '#8a3a4a'], h1: '#3a1a2e', h2: '#2a1020', gr: '#9a9aa8', sun: '#ffd0d0' },
+{ n: 'الشاطئ', dk: 2, D: [.22, 1, .34, .9, 280], s: ['#2aa8e8', '#8fd8ff', '#fff1c9'], h1: '#f0d890', h2: '#e0c070', gr: '#f0d27a', sun: '#fff3b0' },
+{ n: 'الخريف', dk: 2, D: [.24, 1, .38, .95, 295], s: ['#e08a3a', '#f6c27a', '#fff0d0'], h1: '#c9733a', h2: '#a35528', gr: '#c98a2e', sun: '#fff0b0' },
+{ n: 'الجليد', dk: 3, D: [.28, 2, .44, 1.05, 310], s: ['#5aa0e0', '#b8dcff', '#eef8ff'], h1: '#b7d8f0', h2: '#8fbfe0', gr: '#d8f0ff', sun: '#ffffff' },
+{ n: 'المستنقع', dk: 3, D: [.3, 2, .46, 1.1, 325], s: ['#2a4a3a', '#4d7a5a', '#9cc8a8'], h1: '#3a6a4a', h2: '#2a5038', gr: '#5a8a3a', sun: '#d8ffb0' },
+{ n: 'الفضاء', boss: 6, dk: 4, D: [.34, 2, .52, 1.15, 350], s: ['#05010f', '#150a3a', '#2a1a6a'], h1: '#2a1a5a', h2: '#1a0f40', gr: '#8a6aff', sun: '#fff0ff' },
+{ n: 'الأطلال', dk: 2, D: [.24, 1, .36, .95, 305], s: ['#c9a56a', '#e8cfa0', '#f8ecd0'], h1: '#b89060', h2: '#9a7448', gr: '#b8955a', sun: '#fff7d0' },
+{ n: 'العاصفة', dk: 4, D: [.32, 2, .54, 1.2, 325], s: ['#2a3140', '#4a5568', '#7a8a9e'], h1: '#4a5a70', h2: '#36445a', gr: '#5a8a6a', sun: '#e0e8ff' },
+{ n: 'المصنع', dk: 4, D: [.34, 2, .56, 1.25, 340], s: ['#3a2a20', '#6a4a30', '#b07a4a'], h1: '#5a4030', h2: '#3a2a20', gr: '#8a8a8a', sun: '#ffcc88' },
+{ n: 'النجوم', dk: 5, D: [.36, 2, .58, 1.3, 360], s: ['#0a0a2a', '#2a1a5a', '#6a3a9a'], h1: '#3a2a7a', h2: '#2a1a5a', gr: '#ffd23f', sun: '#ffffff' },
+{ n: 'العرش', boss: 8, dk: 5, D: [.38, 2, .62, 1.4, 390], s: ['#1a0505', '#5a1010', '#c02a1a'], h1: '#3a0a0a', h2: '#240505', gr: '#d4a017', sun: '#ffd0a0' },
+{ n: 'الشعاب', dk: 3, D: [.28, 2, .44, 1.05, 325], s: ['#0e7fa8', '#4fc3e8', '#bff0ff'], h1: '#2aa6c0', h2: '#1b7f9a', gr: '#3ad0a8', sun: '#e8ffff' },
+{ n: 'الكريستال', dk: 4, D: [.32, 2, .5, 1.15, 345], s: ['#2a1a5a', '#5a3a9a', '#a07ae8'], h1: '#6a4ab8', h2: '#4a2a98', gr: '#b88aff', sun: '#ffe8ff' },
+{ n: 'الجبال', dk: 3, D: [.3, 2, .46, 1.05, 335], s: ['#6a8ab0', '#b8cde4', '#f0f6fc'], h1: '#9ab0c8', h2: '#7a92b0', gr: '#e8f0f8', sun: '#ffffff' },
+{ n: 'الصدأ', dk: 4, D: [.34, 2, .54, 1.2, 360], s: ['#4a2a1a', '#8a5a2a', '#d09a5a'], h1: '#7a4a2a', h2: '#5a3418', gr: '#a8743a', sun: '#ffcf9a' },
+{ n: 'قلعة الجليد', boss: 9, dk: 5, D: [.36, 2, .6, 1.25, 400], s: ['#1a3050', '#3a6a9a', '#9ac8f0'], h1: '#5a8ab8', h2: '#3a6a98', gr: '#d0ecff', sun: '#ffffff' },
+{ n: 'الغيوم الوردية', dk: 2, D: [.26, 1, .4, .95, 345], s: ['#f08ab8', '#ffc4dc', '#fff0f6'], h1: '#ffd0e4', h2: '#f0a8c8', gr: '#ffffff', sun: '#fff6c0' },
+{ n: 'المناجم', dk: 4, D: [.34, 2, .56, 1.2, 370], s: ['#1a1410', '#3a2a1a', '#6a4a2a'], h1: '#4a3420', h2: '#2e2010', gr: '#c8a24a', sun: '#ffcc66' },
+{ n: 'المدينة', dk: 4, D: [.35, 2, .58, 1.25, 390], s: ['#0a1a3a', '#1a3a6a', '#3a6aa8'], h1: '#1a2f58', h2: '#10203e', gr: '#9aa8c0', sun: '#fff4cc' },
+{ n: 'مدار القمر', dk: 5, D: [.36, 2, .62, 1.3, 415], s: ['#02020a', '#0a0a2a', '#1a1a4a'], h1: '#1a1a3a', h2: '#10102a', gr: '#c0c0d8', sun: '#e8e8ff' },
+{ n: 'الملك الأخير', boss: 12, dk: 5, D: [.4, 2, .68, 1.45, 450], s: ['#0a0008', '#3a0a2a', '#8a1a4a'], h1: '#2a0a1a', h2: '#1a0510', gr: '#ffd23f', sun: '#ffb0d0' }
+];
+
+const BT = { n: 'تحت الأرض', s: ['#0a0f2a', '#10204f', '#1a2f6a'], h1: '#14306a', h2: '#0f2552', gr: '#2a56c8', sun: '#9ec5ff' }, cur = () => bonus ? BT : TH[lv];
+const SK = [{ n: 'كلاسيكي', p: 0, a: '#e53935', b: '#2a4fd6', c: '#e53935' }, { n: 'الأخضر', p: 30, a: '#2e9e4f', b: '#1f5fbf', c: '#2e9e4f' }, { n: 'الأزرق', p: 60, a: '#3b82f6', b: '#1e3a8a', c: '#3b82f6' }, { n: 'الوردي', p: 100, a: '#ec4899', b: '#7e22ce', c: '#ec4899' }, { n: 'الذهبي', p: 150, a: '#f5b800', b: '#a16207', c: '#f5b800' }, { n: 'النينجا', p: 220, a: '#2b2b33', b: '#3d3d48', c: '#2b2b33', ninja: 1 }, { n: 'الفضائي', p: 300, a: '#7c5cff', b: '#3b2fa0', c: '#7c5cff', k: '#9be59b' }, { n: 'قوس قزح', p: 450, rb: 1 }];
+function RNG(s) { return () => { s = s + 0x6D2B79F5 | 0; let t = Math.imul(s ^ s >>> 15, 1 | s); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 } }
+
+function gen() {
+ const R = RNG(lv * 7919 + 13), D = TH[lv].D, LE = D[4] - (TH[lv].boss ? 44 : 24);
+ cols = D[4]; FX = (cols - 6) * T; bonus = 0; pw = null; mainSt = null; pipes = []; warps = [];
+ map = Array.from({ length: rows }, () => Array(cols).fill(0)); coins = []; en = []; cps = [60];
+ const gaps = [], cn = (a, b, r) => { for (let q = a; q <= b; q++) coins.push({ x: q * T + 16, y: r * T + 16 }) };
+ 
+ const maxCps = Math.min(5, Math.max(3, Math.floor(cols / 70)));
+ let i = 10;
+
+ while (i < LE) {
+  if (cps.length < maxCps && i > (cols * cps.length / maxCps)) {
+   cps.push(i * T + 8);
+   cn(i, i + 3, 11);
+   i += 5;
+   continue;
+  }
+
+  if (pipes.length < Math.floor(cols / 60) && R() < .18) {
+   const h = 2 + (R() * 3 | 0);
+   for (let k = 12 - h; k < 12; k++) { map[k][i] = 5; map[k][i + 1] = 5 }
+   pipes.push({ c: i, top: 12 - h });
+   if (!warps.length || R() < .45) warps.push({ c: i, top: 12 - h });
+   cn(i, i + 1, Math.max(2, 10 - h));
+   i += 6;
+   continue;
+  }
+
+  const r = R();
+  if (r < D[0]) {
+   const w = 2 + (R() * (2 + D[1]) | 0);
+   gaps.push([i, i + w - 1]);
+   for (let q = i; q < i + w; q++) coins.push({ x: q * T + 16, y: (q === i || q === i + w - 1 ? 9 : 8) * T + 16 });
+   i += w + 4;
+  }
+  else if (r < D[0] + .18) {
+   const stH = 3 + (R() * 3 | 0);
+   for (let s = 0; s < stH; s++) {
+    for (let h = 0; h <= s; h++) map[11 - h][i + s] = 2;
+   }
+   cn(i, i + stH - 1, 11 - stH);
+   i += stH;
+   map[11 - stH][i] = 3;
+   cn(i, i, 9 - stH);
+   i++;
+   for (let s = 0; s < stH; s++) {
+    for (let h = 0; h < stH - s; h++) map[11 - h][i + s] = 2;
+   }
+   i += stH + 4;
+  }
+  else if (r < D[0] + .35) {
+   const platLen = 5 + (R() * 6 | 0);
+   for (ltot=1,stars={},mute=false;
 let W=800,S=1;
 const K={l:0,r:0,j:0,d:0,a:0};
 let map,coins,en,p,cam=0,state='start',stT=0,score=0,n=0,lives=3,cp=60,inv=0,fr=0,buf=0,dying=0,parts=[],bt={};
