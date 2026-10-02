@@ -9,7 +9,7 @@
     <title>مغامرة النجمة - Star Adventure</title>
     <link rel="manifest" href="manifest.webmanifest">
     <link rel="icon" href="icons/icon-192.png" type="image/png">
-    <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=im1gNTP3xTS-unhe3L6QGAe5vAOQ1-c4l1acvOGafcVSEjvRGBr7O8lE6GRI0R1YKAji-sRKRRixoIYBYZjAvWcruLix7JgqeEsn7LdHNi9pFqE7AOHKfnZiqQ4uHDfv0HjDeEB18yNUWXu-XljGHaAYeiXV6_N5LPRYcvMI9TrTRCGWuYSZk7fuTeK175k1vJr3Io23wbUVCbLirEsvbngzC-dEJhiiUprlzFbBNCbe58lJ66s5nAsQFRLMmYDj5Pj3NOG_C8rHVyD6swKq6t5iV1w0xiWGEJAj1l2MTBAhRH4ud1vB8_0HOckRtixC" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pBeE5EVXlaVE5oWm1Fd01tTTBNamd3TURBd05qVmpaR013TkdSaU5HRTBaREF5TWpkaU1XRmhaalF6TUdFM1lURVNDeElIRUsyN3F1T3ZCUmdCJmZpbGVuYW1lPWluZGV4Lmh0bWwmb3BpPTEwMzEzNTA1MA"/><style>
+    <style>
         * {
             box-sizing: border-box;
             margin: 0;
@@ -27,7 +27,6 @@
             color: #ffffff;
         }
 
-        /* حاوية اللعبة */
         #game-container {
             position: relative;
             width: 100%;
@@ -38,7 +37,7 @@
             background: #111426;
         }
 
-        canvas {
+        canvas#gameCanvas {
             display: block;
             width: 100%;
             height: 100%;
@@ -46,7 +45,6 @@
             background: #60a5fa;
         }
 
-        /* القائمة الرئيسية */
         .overlay-screen {
             position: absolute;
             inset: 0;
@@ -69,19 +67,21 @@
             background: #181d38;
             border: 2px solid #2a335e;
             border-radius: 24px;
-            padding: 30px 24px 20px 24px;
+            padding: 24px 20px;
             width: 100%;
-            max-width: 380px;
+            max-width: 390px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 14px;
+            gap: 11px;
+            max-height: 95vh;
+            overflow-y: auto;
         }
 
         .avatar-preview {
-            width: 80px;
-            height: 80px;
+            width: 74px;
+            height: 74px;
             border-radius: 20px;
             background: #232b50;
             border: 2px solid #3b487e;
@@ -92,7 +92,7 @@
         }
 
         .game-title {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 900;
             color: #facc15;
             text-shadow: 0 3px 0 #b45309, 0 0 20px rgba(250, 204, 21, 0.4);
@@ -103,13 +103,13 @@
         }
 
         .player-status {
-            font-size: 15px;
+            font-size: 14px;
             color: #cbd5e1;
             display: flex;
             align-items: center;
             gap: 8px;
             background: rgba(0,0,0,0.25);
-            padding: 6px 16px;
+            padding: 5px 14px;
             border-radius: 20px;
         }
         .player-status span {
@@ -117,13 +117,12 @@
             font-weight: bold;
         }
 
-        /* الأزرار */
         .btn {
             width: 100%;
-            padding: 14px 20px;
+            padding: 12px 18px;
             border-radius: 14px;
             border: none;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
             cursor: pointer;
             display: flex;
@@ -140,37 +139,31 @@
             background: linear-gradient(180deg, #facc15 0%, #eab308 100%);
             color: #451a03;
             box-shadow: 0 4px 0 #a16207, 0 8px 16px rgba(234, 179, 8, 0.3);
-            font-size: 18px;
+            font-size: 16px;
         }
-        .btn-primary:active {
-            box-shadow: 0 1px 0 #a16207;
-            transform: translateY(3px);
+        .btn-success {
+            background: linear-gradient(180deg, #22c55e 0%, #16a34a 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 0 #15803d;
         }
-
         .btn-secondary {
             background: #232b50;
             color: #e2e8f0;
             border: 1px solid #354173;
             box-shadow: 0 3px 0 #13172e;
         }
-        .btn-secondary:active {
-            box-shadow: 0 1px 0 #13172e;
-            transform: translateY(2px);
+        .btn-accent {
+            background: #8b5cf6;
+            color: #ffffff;
+            border: 1px solid #a78bfa;
+            box-shadow: 0 3px 0 #6d28d9;
         }
 
-        .privacy-link {
-            color: #94a3b8;
-            font-size: 13px;
-            text-decoration: underline;
-            margin-top: 4px;
-            cursor: pointer;
-        }
-
-        /* شاشات النوافذ المنبثقة (Modals) */
+        /* شاشات النوافذ المنبثقة */
         .modal-screen {
             position: absolute;
             inset: 0;
-            background: rgba(10, 13, 26, 0.92);
+            background: rgba(10, 13, 26, 0.94);
             backdrop-filter: blur(8px);
             z-index: 60;
             display: flex;
@@ -187,12 +180,12 @@
             border-radius: 20px;
             width: 100%;
             max-width: 440px;
-            max-height: 85vh;
+            max-height: 88vh;
             overflow-y: auto;
-            padding: 24px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 14px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.7);
         }
         .modal-header {
@@ -200,10 +193,10 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid #2a335e;
-            padding-bottom: 12px;
+            padding-bottom: 10px;
         }
         .modal-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 800;
             color: #facc15;
         }
@@ -216,9 +209,6 @@
             border-radius: 50%;
             font-weight: bold;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* شبكة السكينات في المتجر */
@@ -243,14 +233,7 @@
             background: #293259;
             box-shadow: 0 0 12px rgba(250, 204, 21, 0.3);
         }
-        .skin-preview {
-            width: 60px;
-            height: 60px;
-        }
-        .skin-name {
-            font-weight: bold;
-            font-size: 14px;
-        }
+        .skin-preview { width: 60px; height: 60px; }
         .skin-btn {
             padding: 6px 12px;
             border-radius: 8px;
@@ -262,32 +245,20 @@
         }
 
         /* المراحل */
-        .levels-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
+        .levels-grid { display: flex; flex-direction: column; gap: 10px; }
         .level-row {
             background: #202747;
             border: 1px solid #313d6c;
             border-radius: 12px;
-            padding: 14px 16px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            transition: all 0.15s;
         }
-        .level-row.locked {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .level-row:not(.locked):hover {
-            border-color: #facc15;
-            background: #27315a;
-        }
+        .level-row.locked { opacity: 0.5; cursor: not-allowed; }
 
-        /* واجهة اللعب HUD */
+        /* HUD */
         #hud {
             position: absolute;
             top: 12px;
@@ -303,9 +274,9 @@
             background: rgba(15, 23, 42, 0.75);
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 255, 255, 0.15);
-            padding: 8px 14px;
+            padding: 8px 12px;
             border-radius: 12px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -314,59 +285,99 @@
             pointer-events: auto;
         }
 
-        /* أزرار اللمس على شاشة الهاتف */
-        #touch-controls {
-            position: absolute;
-            bottom: 16px;
-            left: 16px;
-            right: 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            z-index: 30;
-            pointer-events: none;
-        }
-        .touch-group {
-            display: flex;
-            gap: 12px;
-            pointer-events: auto;
-        }
+        /* أزرار اللمس القابلة للتخصيص المطلق */
         .touch-btn {
-            width: 66px;
-            height: 66px;
+            position: absolute;
             border-radius: 50%;
-            background: rgba(30, 41, 59, 0.65);
-            border: 2px solid rgba(255, 255, 255, 0.35);
+            background: rgba(30, 41, 59, 0.7);
+            border: 2px solid rgba(255, 255, 255, 0.4);
             backdrop-filter: blur(4px);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
             color: #ffffff;
             box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
             user-select: none;
+            touch-action: none;
+            z-index: 35;
+        }
+        .touch-btn img.custom-icon {
+            width: 70%;
+            height: 70%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+        .touch-btn span.default-icon {
+            pointer-events: none;
+            font-size: 24px;
+            font-weight: bold;
         }
         .touch-btn:active, .touch-btn.active {
-            background: rgba(250, 204, 21, 0.5);
+            background: rgba(250, 204, 21, 0.55);
             border-color: #facc15;
             transform: scale(0.92);
         }
-        .btn-action-a {
-            background: rgba(225, 29, 72, 0.65);
-            font-size: 22px;
-            font-weight: 900;
+
+        /* وضع تحرير الأزرار */
+        .touch-btn.in-edit-mode {
+            border: 2px dashed #facc15 !important;
+            box-shadow: 0 0 15px rgba(250, 204, 21, 0.8) !important;
+            animation: pulse-border 1.2s infinite ease-in-out;
+            cursor: move;
         }
-        .btn-action-b {
-            background: rgba(2, 132, 199, 0.65);
-            font-size: 22px;
-            font-weight: 900;
+        @keyframes pulse-border {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
         }
 
-        /* إخفاء أزرار اللمس تلقائياً على أجهزة الكمبيوتر التي بها فأرة فقط إذا أردت */
-        @media (hover: hover) and (pointer: fine) {
-            #touch-controls {
-                opacity: 0.8;
-            }
+        /* شريط أدوات محرر الأزرار العلوي */
+        #editor-toolbar {
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 23, 42, 0.95);
+            border: 2px solid #facc15;
+            border-radius: 16px;
+            padding: 12px 18px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            z-index: 70;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+            width: 90%;
+            max-width: 480px;
+        }
+
+        /* أدوات لوحة الرسم */
+        #draw-tools {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .color-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            cursor: pointer;
+            transition: transform 0.15s;
+        }
+        .color-dot.selected {
+            transform: scale(1.2);
+            border-color: #facc15;
+            box-shadow: 0 0 8px #facc15;
+        }
+        #btn-painter-canvas {
+            background: #111827;
+            border: 2px solid #38bdf8;
+            border-radius: 16px;
+            cursor: crosshair;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            touch-action: none;
         }
     </style>
 </head>
@@ -377,30 +388,47 @@
 
         <!-- واجهة أثناء اللعب (HUD) -->
         <div id="hud" class="hidden">
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 6px;">
                 <div class="hud-item" id="hud-lives">❤️❤️❤️</div>
                 <div class="hud-item" style="color: #facc15;">🪙 <span id="hud-coins">0</span></div>
                 <div class="hud-item" style="color: #38bdf8;">⭐ <span id="hud-stars">0</span></div>
+                <div class="hud-item hidden" id="hud-powerup" style="color: #a855f7; font-size: 12px;">⚡ خارق</div>
             </div>
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 6px;">
                 <div class="hud-item" id="hud-score">0</div>
                 <button class="hud-item" onclick="togglePause()" style="cursor: pointer; background: #e11d48;">⏸️</button>
             </div>
         </div>
 
-        <!-- أزرار التحكم باللمس للشاشات -->
-        <div id="touch-controls" class="hidden">
-            <div class="touch-group">
-                <div class="touch-btn" id="btn-left">◀</div>
-                <div class="touch-btn" id="btn-right">▶</div>
+        <!-- أزرار اللمس الميدانية الأربعة المستقلة -->
+        <div id="controls-layer" class="hidden">
+            <div class="touch-btn" id="btn-left">
+                <span class="default-icon">◀</span>
             </div>
-            <div class="touch-group">
-                <div class="touch-btn btn-action-b" id="btn-shoot">⭐</div>
-                <div class="touch-btn btn-action-a" id="btn-jump">▲</div>
+            <div class="touch-btn" id="btn-right">
+                <span class="default-icon">▶</span>
+            </div>
+            <div class="touch-btn" id="btn-shoot" style="background: rgba(2, 132, 199, 0.7);">
+                <span class="default-icon">⭐</span>
+            </div>
+            <div class="touch-btn" id="btn-jump" style="background: rgba(225, 29, 72, 0.7);">
+                <span class="default-icon">▲</span>
             </div>
         </div>
 
-        <!-- القائمة الرئيسية (مطابقة للصورة الأصلية تماماً) -->
+        <!-- شريط أدوات وضع تحريك الأزرار -->
+        <div id="editor-toolbar" class="hidden">
+            <div style="font-weight: 800; font-size: 15px; color: #facc15; text-align: center;">
+                🛠️ وضع تعديل الأزرار: اسحب أي زر لوضعه في المكان المناسب
+            </div>
+            <div style="display: flex; gap: 8px; width: 100%;">
+                <button class="btn btn-success" style="padding: 8px; font-size: 14px;" onclick="saveCustomButtonPositions()">✓ حفظ الأماكن</button>
+                <button class="btn btn-secondary" style="padding: 8px; font-size: 14px;" onclick="resetButtonPositions()">🔄 استعادة الافتراضي</button>
+                <button class="btn btn-secondary" style="padding: 8px; font-size: 14px; background:#475569;" onclick="exitLayoutEditor()">إلغاء</button>
+            </div>
+        </div>
+
+        <!-- القائمة الرئيسية -->
         <div id="main-menu" class="overlay-screen">
             <div class="menu-card">
                 <div class="avatar-preview">
@@ -413,7 +441,7 @@
                     👤 لاعب · <span id="menu-coins">0</span> 🪙
                 </div>
 
-                <button class="btn btn-primary" onclick="startGame(currentLevel)">
+                <button class="btn btn-primary" onclick="startGame(currentLevel, false)">
                     ▶ ابدأ — المرحلة <span id="menu-level-name">1: المروج</span>
                 </button>
 
@@ -425,6 +453,11 @@
                     المتجر والسكينات 🛍️
                 </button>
 
+                <!-- زر إدارة وتخصيص التحكم الجديد -->
+                <button class="btn btn-accent" onclick="openModal('controls-modal')">
+                    🎮 تخصيص ورسم أزرار التحكم
+                </button>
+
                 <button class="btn btn-secondary" onclick="openModal('profile-modal')">
                     الملف الشخصي 🏆
                 </button>
@@ -433,11 +466,121 @@
                     🔊 الصوت مفتوح
                 </button>
 
-                <a href="privacy.html" class="privacy-link">سياسة الخصوصية</a>
+                <a href="privacy.html" style="color: #94a3b8; font-size: 12px; text-decoration: underline;">سياسة الخصوصية</a>
             </div>
         </div>
 
-        <!-- نافذة المتجر والسكينات -->
+        <!-- نافذة تخصيص أزرار التحكم -->
+        <div id="controls-modal" class="modal-screen hidden">
+            <div class="modal-box">
+                <div class="modal-header">
+                    <div class="modal-title">🎮 استوديو أزرار التحكم</div>
+                    <button class="close-btn" onclick="closeModal('controls-modal')">✕</button>
+                </div>
+
+                <div style="font-size: 14px; color: #cbd5e1;">
+                    يمكنك تعديل مواقع الأزرار بسحبها على الشاشة، أو رسم تصميم خاص لكل زر بنفسك!
+                </div>
+
+                <!-- 1. زر تحريك الأماكن -->
+                <button class="btn btn-primary" onclick="enterLayoutEditor()">
+                    📐 تحريك وتعديل أماكن الأزرار (بالسحب)
+                </button>
+
+                <hr style="border-color: #2a335e;">
+
+                <!-- 2. لوحة رسم الأزرار -->
+                <div style="font-weight: bold; color: #facc15; font-size: 15px;">🎨 ارسم شكل الزر بنفسك:</div>
+
+                <!-- اختيار الزر المراد رسمه -->
+                <div style="display: flex; gap: 6px; width: 100%;">
+                    <button class="btn btn-secondary target-btn-select" id="pick-left" style="padding: 7px; font-size: 12px;" onclick="selectButtonToDraw('left')">◀ يسار</button>
+                    <button class="btn btn-secondary target-btn-select" id="pick-right" style="padding: 7px; font-size: 12px;" onclick="selectButtonToDraw('right')">▶ يمين</button>
+                    <button class="btn btn-secondary target-btn-select" id="pick-jump" style="padding: 7px; font-size: 12px;" onclick="selectButtonToDraw('jump')">▲ قفز</button>
+                    <button class="btn btn-secondary target-btn-select" id="pick-shoot" style="padding: 7px; font-size: 12px;" onclick="selectButtonToDraw('shoot')">⭐ إطلاق</button>
+                </div>
+
+                <!-- كانفاس الرسم الميداني -->
+                <div style="display: flex; justify-content: center; margin: 5px 0;">
+                    <canvas id="btn-painter-canvas" width="128" height="128"></canvas>
+                </div>
+
+                <!-- باليت الألوان -->
+                <div id="draw-tools">
+                    <div class="color-dot selected" style="background:#ffffff;" onclick="setDrawColor('#ffffff', this)"></div>
+                    <div class="color-dot" style="background:#facc15;" onclick="setDrawColor('#facc15', this)"></div>
+                    <div class="color-dot" style="background:#ef4444;" onclick="setDrawColor('#ef4444', this)"></div>
+                    <div class="color-dot" style="background:#38bdf8;" onclick="setDrawColor('#38bdf8', this)"></div>
+                    <div class="color-dot" style="background:#22c55e;" onclick="setDrawColor('#22c55e', this)"></div>
+                    <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px; width: auto;" onclick="setDrawEraser(this)">🧹 ممحاة</button>
+                    <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px; width: auto; background:#7f1d1d;" onclick="clearDrawCanvas()">🗑️ مسح</button>
+                </div>
+
+                <!-- أزرار حفظ الرسمة أو استعادة الأصل -->
+                <div style="display: flex; gap: 8px;">
+                    <button class="btn btn-success" onclick="saveDrawnIcon()">💾 تطبيق الرسمة على الزر</button>
+                    <button class="btn btn-secondary" onclick="resetCurrentDrawnIcon()">الأيقونة الأصلية</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- شاشة نهاية المرحلة (عرض المراحل والباوربس المنتقلة) -->
+        <div id="level-complete-screen" class="overlay-screen hidden">
+            <div class="menu-card" style="text-align: center;">
+                <div style="font-size: 25px; font-weight: 900; color: #4ade80;">🎉 أحسنت! اكتملت المرحلة</div>
+                <div style="background: rgba(0,0,0,0.35); border: 1px solid #2a335e; border-radius: 14px; padding: 12px; width: 100%; text-align: right; display: flex; flex-direction: column; gap: 8px;">
+                    <div>
+                        <span style="color: #94a3b8; font-size: 13px;">المرحلة المكتملة:</span>
+                        <div id="completed-lvl-text" style="color: #facc15; font-size: 16px; font-weight: bold;">1: المروج</div>
+                    </div>
+                    <hr style="border-color: #2a335e;">
+                    <div>
+                        <span style="color: #94a3b8; font-size: 13px;">المرحلة التالية:</span>
+                        <div id="next-lvl-text" style="color: #38bdf8; font-size: 16px; font-weight: bold;">2: الكهف الصخري</div>
+                    </div>
+                </div>
+
+                <div id="carried-powerup-badge" class="hidden" style="background: rgba(168, 85, 247, 0.15); border: 1px solid #a855f7; padding: 8px 12px; border-radius: 12px; font-size: 13px; color: #d8b4fe; width: 100%;">
+                    ⚡ تم الاحتفاظ بالباور-أب والقلوب للمرحلة القادمة!
+                </div>
+
+                <div style="font-size: 16px; font-weight: bold; color: #facc15; margin: 4px 0;">
+                    النقاط: <span id="complete-score">0</span>
+                </div>
+
+                <button id="btn-next-stage" class="btn btn-success" onclick="goToNextLevel()">
+                    ▶ الانتقال إلى المرحلة التالية
+                </button>
+                <button class="btn btn-secondary" onclick="returnToMenu()">
+                    🏠 القائمة الرئيسية
+                </button>
+            </div>
+        </div>
+
+        <!-- شاشة السقوط -->
+        <div id="game-over-screen" class="overlay-screen hidden">
+            <div class="menu-card" style="text-align: center;">
+                <div style="font-size: 28px; font-weight: 900; color: #ef4444;">💔 سقط البطل!</div>
+                <div style="color: #cbd5e1; font-size: 15px;">حاول مجدداً للوصول إلى خط النهاية</div>
+                <div style="font-size: 18px; font-weight: bold; color: #facc15; margin: 10px 0;">
+                    النقاط: <span id="game-over-score">0</span>
+                </div>
+                <button class="btn btn-primary" onclick="restartLevel()">🔄 إعادة المحاولة</button>
+                <button class="btn btn-secondary" onclick="returnToMenu()">🏠 القائمة الرئيسية</button>
+            </div>
+        </div>
+
+        <!-- شاشة الإيقاف -->
+        <div id="pause-screen" class="overlay-screen hidden">
+            <div class="menu-card" style="text-align: center;">
+                <div style="font-size: 26px; font-weight: 900; color: #facc15;">اللعبة متوقفة مؤقتاً</div>
+                <button class="btn btn-primary" onclick="togglePause()">▶ استئناف</button>
+                <button class="btn btn-secondary" onclick="restartLevel()">🔄 إعادة المرحلة</button>
+                <button class="btn btn-secondary" onclick="returnToMenu()">🏠 الخروج للقائمة</button>
+            </div>
+        </div>
+
+        <!-- المتجر -->
         <div id="shop-modal" class="modal-screen hidden">
             <div class="modal-box">
                 <div class="modal-header">
@@ -447,183 +590,144 @@
                 <div style="font-size: 15px; color: #facc15; font-weight: bold;">
                     رصيدك الحالي: <span id="shop-coins-display">0</span> 🪙
                 </div>
-                <div class="skins-grid" id="skins-container">
-                    <!-- يتم توليد السكينات برمجياً -->
-                </div>
+                <div class="skins-grid" id="skins-container"></div>
             </div>
         </div>
 
-        <!-- نافذة اختيار المراحل -->
+        <!-- المراحل -->
         <div id="levels-modal" class="modal-screen hidden">
             <div class="modal-box">
                 <div class="modal-header">
                     <div class="modal-title">🗺️ اختيار المرحلة</div>
                     <button class="close-btn" onclick="closeModal('levels-modal')">✕</button>
                 </div>
-                <div class="levels-grid" id="levels-container">
-                    <!-- يتم توليد المراحل برمجياً -->
-                </div>
+                <div class="levels-grid" id="levels-container"></div>
             </div>
         </div>
 
-        <!-- نافذة الملف الشخصي والإنجازات -->
+        <!-- الملف الشخصي -->
         <div id="profile-modal" class="modal-screen hidden">
             <div class="modal-box">
                 <div class="modal-header">
                     <div class="modal-title">🏆 الملف الشخصي والإنجازات</div>
                     <button class="close-btn" onclick="closeModal('profile-modal')">✕</button>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px; font-size: 15px;">
-                    <div>🌟 أعلى نتيجة محققة: <b id="prof-highscore" style="color: #facc15;">0</b></div>
-                    <div>🪙 إجمالي العملات المجمعة: <b id="prof-coins" style="color: #facc15;">0</b></div>
-                    <div>⭐ إجمالي النجوم المجمعة: <b id="prof-stars" style="color: #38bdf8;">0</b></div>
+                <div style="display: flex; flex-direction: column; gap: 8px; font-size: 15px;">
+                    <div>🌟 أعلى نتيجة: <b id="prof-highscore" style="color: #facc15;">0</b></div>
+                    <div>🪙 العملات المجمعة: <b id="prof-coins" style="color: #facc15;">0</b></div>
+                    <div>⭐ النجوم المجمعة: <b id="prof-stars" style="color: #38bdf8;">0</b></div>
                     <div>👾 الأعداء المهزومون: <b id="prof-enemies" style="color: #f43f5e;">0</b></div>
                 </div>
-                <hr style="border-color: #2a335e;">
-                <div style="font-weight: bold; color: #facc15;">الإنجازات المكتملة:</div>
-                <div id="achievements-list" style="display: flex; flex-direction: column; gap: 8px; font-size: 13px;">
-                </div>
-            </div>
-        </div>
-
-        <!-- شاشة نهاية اللعبة / الفوز -->
-        <div id="game-over-screen" class="overlay-screen hidden">
-            <div class="menu-card" style="text-align: center;">
-                <div id="game-over-title" style="font-size: 28px; font-weight: 900; color: #ef4444;">انتهت المحاولة!</div>
-                <div id="game-over-desc" style="color: #cbd5e1; font-size: 16px;">حاول مجدداً للوصول إلى خط النهاية</div>
-                <div style="font-size: 20px; font-weight: bold; color: #facc15; margin: 10px 0;">
-                    النقاط: <span id="game-over-score">0</span>
-                </div>
-                <button class="btn btn-primary" onclick="restartLevel()">🔄 إعادة المحاولة</button>
-                <button class="btn btn-secondary" onclick="returnToMenu()">🏠 القائمة الرئيسية</button>
-            </div>
-        </div>
-
-        <!-- شاشة إيقاف مؤقت -->
-        <div id="pause-screen" class="overlay-screen hidden">
-            <div class="menu-card" style="text-align: center;">
-                <div style="font-size: 26px; font-weight: 900; color: #facc15;">اللعبة متوقفة مؤقتاً</div>
-                <button class="btn btn-primary" onclick="togglePause()">▶ استئناف</button>
-                <button class="btn btn-secondary" onclick="restartLevel()">🔄 إعادة المرحلة</button>
-                <button class="btn btn-secondary" onclick="returnToMenu()">🏠 الخروج للقائمة</button>
             </div>
         </div>
     </div>
 
     <script>
-        /* ==========================================================================
-           1. نظام الصوت التوليدي الذكي (Web Audio API Synthesizer)
-           يعمل 100% بدون أي ملفات خارجية أو مشاكل 404
-           ========================================================================== */
+        /* 1. نظام الصوت التوليدي (Web Audio API) */
         const Sound = {
             ctx: null,
             enabled: true,
-
             init() {
                 if (!this.ctx) {
-                    const AudioContext = window.AudioContext || window.webkitAudioContext;
-                    this.ctx = new AudioContext();
+                    const AC = window.AudioContext || window.webkitAudioContext;
+                    this.ctx = new AC();
                 }
-                if (this.ctx && this.ctx.state === 'suspended') {
-                    this.ctx.resume();
-                }
+                if (this.ctx && this.ctx.state === 'suspended') this.ctx.resume();
             },
-
             playJump() {
                 if (!this.enabled || !this.ctx) return;
                 const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+                const g = this.ctx.createGain();
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(150, this.ctx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(600, this.ctx.currentTime + 0.15);
-                gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-                gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.15);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(this.ctx.currentTime + 0.15);
+                g.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                g.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.15);
+                osc.connect(g); g.connect(this.ctx.destination);
+                osc.start(); osc.stop(this.ctx.currentTime + 0.15);
             },
-
             playCoin() {
                 if (!this.enabled || !this.ctx) return;
-                const now = this.ctx.currentTime;
+                const t = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+                const g = this.ctx.createGain();
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(987.77, now); // B5
-                osc.frequency.setValueAtTime(1318.51, now + 0.08); // E6
-                gain.gain.setValueAtTime(0.25, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.35);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(now + 0.35);
+                osc.frequency.setValueAtTime(987.77, t);
+                osc.frequency.setValueAtTime(1318.51, t + 0.08);
+                g.gain.setValueAtTime(0.25, t);
+                g.gain.linearRampToValueAtTime(0, t + 0.35);
+                osc.connect(g); g.connect(this.ctx.destination);
+                osc.start(); osc.stop(t + 0.35);
             },
-
+            playPowerUp() {
+                if (!this.enabled || !this.ctx) return;
+                const notes = [330, 392, 659, 523, 587, 784];
+                notes.forEach((freq, idx) => {
+                    setTimeout(() => {
+                        if (!this.ctx) return;
+                        const osc = this.ctx.createOscillator();
+                        const g = this.ctx.createGain();
+                        osc.type = 'square';
+                        osc.frequency.value = freq;
+                        g.gain.setValueAtTime(0.18, this.ctx.currentTime);
+                        g.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.12);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(); osc.stop(this.ctx.currentTime + 0.12);
+                    }, idx * 70);
+                });
+            },
             playShoot() {
                 if (!this.enabled || !this.ctx) return;
-                const now = this.ctx.currentTime;
+                const t = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+                const g = this.ctx.createGain();
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(800, now);
-                osc.frequency.exponentialRampToValueAtTime(200, now + 0.12);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.12);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(now + 0.12);
+                osc.frequency.setValueAtTime(800, t);
+                osc.frequency.exponentialRampToValueAtTime(200, t + 0.12);
+                g.gain.setValueAtTime(0.2, t);
+                g.gain.linearRampToValueAtTime(0, t + 0.12);
+                osc.connect(g); g.connect(this.ctx.destination);
+                osc.start(); osc.stop(t + 0.12);
             },
-
             playStomp() {
                 if (!this.enabled || !this.ctx) return;
-                const now = this.ctx.currentTime;
+                const t = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+                const g = this.ctx.createGain();
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(250, now);
-                osc.frequency.exponentialRampToValueAtTime(60, now + 0.12);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.12);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(now + 0.12);
+                osc.frequency.setValueAtTime(250, t);
+                osc.frequency.exponentialRampToValueAtTime(60, t + 0.12);
+                g.gain.setValueAtTime(0.3, t);
+                g.gain.linearRampToValueAtTime(0, t + 0.12);
+                osc.connect(g); g.connect(this.ctx.destination);
+                osc.start(); osc.stop(t + 0.12);
             },
-
             playBump() {
                 if (!this.enabled || !this.ctx) return;
-                const now = this.ctx.currentTime;
+                const t = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+                const g = this.ctx.createGain();
                 osc.type = 'square';
-                osc.frequency.setValueAtTime(180, now);
-                osc.frequency.linearRampToValueAtTime(90, now + 0.08);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.08);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(now + 0.08);
+                osc.frequency.setValueAtTime(180, t);
+                osc.frequency.linearRampToValueAtTime(90, t + 0.08);
+                g.gain.setValueAtTime(0.2, t);
+                g.gain.linearRampToValueAtTime(0, t + 0.08);
+                osc.connect(g); g.connect(this.ctx.destination);
+                osc.start(); osc.stop(t + 0.08);
             },
-
             playHurt() {
                 if (!this.enabled || !this.ctx) return;
-                const now = this.ctx.currentTime;
+                const t = this.ctx.currentTime;
                 const osc = this.ctx.createOscillator();
-                const gain = this.ctx.createGain();
+                const g = this.ctx.createGain();
                 osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(320, now);
-                osc.frequency.linearRampToValueAtTime(70, now + 0.25);
-                gain.gain.setValueAtTime(0.35, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.25);
-                osc.connect(gain);
-                gain.connect(this.ctx.destination);
-                osc.start();
-                osc.stop(now + 0.25);
+                osc.frequency.setValueAtTime(320, t);
+                osc.frequency.linearRampToValueAtTime(70, t + 0.25);
+                g.gain.setValueAtTime(0.35, t);
+                g.gain.linearRampToValueAtTime(0, t + 0.25);
+                osc.connect(g); g.connect(this.ctx.destination);
+                osc.start(); osc.stop(t + 0.25);
             },
-
             playWin() {
                 if (!this.enabled || !this.ctx) return;
                 const notes = [261.63, 329.63, 392.00, 523.25, 659.25, 783.99];
@@ -631,23 +735,19 @@
                     setTimeout(() => {
                         if (!this.ctx) return;
                         const osc = this.ctx.createOscillator();
-                        const gain = this.ctx.createGain();
+                        const g = this.ctx.createGain();
                         osc.type = 'triangle';
                         osc.frequency.value = freq;
-                        gain.gain.setValueAtTime(0.2, this.ctx.currentTime);
-                        gain.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.25);
-                        osc.connect(gain);
-                        gain.connect(this.ctx.destination);
-                        osc.start();
-                        osc.stop(this.ctx.currentTime + 0.25);
+                        g.gain.setValueAtTime(0.2, this.ctx.currentTime);
+                        g.gain.linearRampToValueAtTime(0, this.ctx.currentTime + 0.25);
+                        osc.connect(g); g.connect(this.ctx.destination);
+                        osc.start(); osc.stop(this.ctx.currentTime + 0.25);
                     }, idx * 100);
                 });
             }
         };
 
-        /* ==========================================================================
-           2. بيانات اللاعب والتخزين (Storage & Skins & Levels)
-           ========================================================================== */
+        /* 2. بيانات السكينات والمراحل */
         const SKINS = [
             { id: 'classic', name: 'البطل الكلاسيكي', price: 0, cap: '#dc2626', suit: '#2563eb', star: '#facc15' },
             { id: 'fire', name: 'بطل اللهب', price: 60, cap: '#ffffff', suit: '#dc2626', star: '#f97316' },
@@ -670,16 +770,25 @@
             enemiesDefeated: 0,
             unlockedLevel: 1,
             ownedSkins: ['classic'],
-            currentSkin: 'classic'
+            currentSkin: 'classic',
+            // تخزين إعدادات الأزرار (المواقع والأيقونات المرسومة)
+            buttonSettings: {
+                positions: null, // سيتم تهيئتها لاحقاً
+                icons: {}        // dataURL لكل زر
+            }
         };
 
         function loadSavedData() {
             try {
-                const saved = localStorage.getItem('star_adventure_data');
-                if (saved) {
-                    playerData = { ...playerData, ...JSON.parse(saved) };
+                const s = localStorage.getItem('star_adventure_data');
+                if (s) {
+                    const parsed = JSON.parse(s);
+                    playerData = { ...playerData, ...parsed };
+                    if (!playerData.buttonSettings) playerData.buttonSettings = { positions: null, icons: {} };
                 }
             } catch(e) {}
+            applySavedButtonPositions();
+            applySavedButtonIcons();
             updateUI();
         }
 
@@ -690,28 +799,24 @@
             updateUI();
         }
 
-        function triggerHaptic(duration = 20) {
+        function triggerHaptic(d = 20) {
             if (navigator.vibrate) {
-                try { navigator.vibrate(duration); } catch(e) {}
+                try { navigator.vibrate(d); } catch(e) {}
             }
         }
 
-        /* ==========================================================================
-           3. محرك اللعبة والفيزياء (Game Engine & Physics)
-           ========================================================================== */
+        /* 3. إعداد الكانفاس والفيزياء */
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        let gameState = 'MENU'; // MENU, PLAYING, PAUSED, GAMEOVER
+        let gameState = 'MENU';
         let currentLevel = 1;
         let score = 0;
         let lives = 3;
         let cameraX = 0;
 
-        // المدخلات
         const keys = { left: false, right: false, jump: false, shoot: false };
 
-        // جزيئات التأثيرات
         let particles = [];
         let bullets = [];
         let enemies = [];
@@ -721,7 +826,6 @@
         let goalFlag = { x: 3000, y: 0 };
         let boss = null;
 
-        // البطل
         const player = {
             x: 100,
             y: 300,
@@ -736,8 +840,10 @@
             invulnerableTime: 0,
             facingRight: true,
             starShootCooldown: 0,
+            hasPowerUp: false,
+            powerUpType: 'NONE',
 
-            reset(startX, startY) {
+            reset(startX, startY, preservePowerUps = false) {
                 this.x = startX;
                 this.y = startY;
                 this.vx = 0;
@@ -745,21 +851,28 @@
                 this.grounded = false;
                 this.doubleJumpAvailable = true;
                 this.invulnerableTime = 0;
+
+                if (!preservePowerUps) {
+                    this.hasPowerUp = false;
+                    this.powerUpType = 'NONE';
+                    this.speed = 5.5;
+                } else if (this.hasPowerUp) {
+                    this.speed = 6.8;
+                }
             }
         };
 
-        // تغيير حجم الكانفاس بذكاء ودقة عالية
         function resizeCanvas() {
             const dpr = window.devicePixelRatio || 1;
             canvas.width = window.innerWidth * dpr;
             canvas.height = window.innerHeight * dpr;
             ctx.scale(dpr, dpr);
+            if (!isEditingControls) applySavedButtonPositions();
         }
         window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
 
-        // بناء المرحلة وتوزيع العناصر
-        function buildLevel(lvlNum) {
+        /* 4. بناء المرحلة */
+        function buildLevel(lvlNum, keepPowerUps = false) {
             enemies = [];
             blocks = [];
             items = [];
@@ -767,18 +880,19 @@
             particles = [];
             movingPlatforms = [];
             boss = null;
-
-            score = 0;
-            lives = 3;
             cameraX = 0;
-            player.reset(120, 200);
+
+            if (!keepPowerUps) {
+                score = 0;
+                lives = 3;
+            }
+
+            player.reset(120, 200, keepPowerUps);
 
             const floorY = window.innerHeight - 100;
             goalFlag.x = 2400 + lvlNum * 400;
             goalFlag.y = floorY - 140;
 
-            // كتل الأرضيات
-            // منصة أرضية متواصلة مع حفر
             let currentX = 0;
             while (currentX < goalFlag.x + 400) {
                 const segLength = 400 + Math.random() * 300;
@@ -792,10 +906,16 @@
                 currentX += segLength + (lvlNum > 1 ? 130 + Math.random() * 50 : 0);
             }
 
-            // مكعبات طوب وعلامات استفهام
+            let powerUpPlaced = false;
             for (let x = 300; x < goalFlag.x - 200; x += 180 + Math.random() * 120) {
                 const blockY = floorY - 120 - (Math.random() > 0.5 ? 60 : 0);
                 const isQuestion = Math.random() > 0.4;
+                let containsPowerUp = false;
+                if (isQuestion && !powerUpPlaced && Math.random() > 0.4) {
+                    containsPowerUp = true;
+                    powerUpPlaced = true;
+                }
+
                 blocks.push({
                     x: x,
                     y: blockY,
@@ -803,11 +923,11 @@
                     h: 42,
                     type: isQuestion ? 'question' : 'brick',
                     hit: false,
-                    hasCoin: isQuestion,
+                    hasCoin: isQuestion && !containsPowerUp,
+                    hasPowerUp: containsPowerUp,
                     bounceOffset: 0
                 });
 
-                // نجوم وعملات فوق بعض المكعبات
                 if (Math.random() > 0.3) {
                     items.push({
                         x: x + 10,
@@ -818,125 +938,90 @@
                 }
             }
 
-            // منصات متحركة للمراحل المتقدمة
             if (lvlNum >= 2) {
                 movingPlatforms.push({
-                    x: 650,
-                    y: floorY - 100,
-                    w: 110,
-                    h: 22,
-                    minX: 600,
-                    maxX: 900,
-                    speed: 2,
-                    dir: 1
+                    x: 650, y: floorY - 100, w: 110, h: 22,
+                    minX: 600, maxX: 900, speed: 2, dir: 1
                 });
                 movingPlatforms.push({
-                    x: 1450,
-                    y: floorY - 80,
-                    w: 110,
-                    h: 22,
-                    minY: floorY - 180,
-                    maxY: floorY - 50,
-                    speed: 1.8,
-                    dir: 1,
-                    vertical: true
+                    x: 1450, y: floorY - 80, w: 110, h: 22,
+                    minY: floorY - 180, maxY: floorY - 50, speed: 1.8, dir: 1, vertical: true
                 });
             }
 
-            // توزيع الأعداء
             for (let x = 450; x < goalFlag.x - 300; x += 320 + Math.random() * 180) {
                 const isSpike = (lvlNum >= 2 && Math.random() > 0.6);
                 enemies.push({
-                    x: x,
-                    y: floorY - 38,
-                    w: 36,
-                    h: 36,
-                    vx: -1.8,
-                    type: isSpike ? 'spike' : 'patrol',
-                    alive: true,
-                    minX: x - 120,
-                    maxX: x + 120
+                    x: x, y: floorY - 38, w: 36, h: 36, vx: -1.8,
+                    type: isSpike ? 'spike' : 'patrol', alive: true,
+                    minX: x - 120, maxX: x + 120
                 });
             }
 
-            // زعيم في المرحلة 4
             if (lvlNum === 4) {
                 boss = {
-                    x: goalFlag.x - 200,
-                    y: floorY - 120,
-                    w: 75,
-                    h: 90,
-                    hp: 5,
-                    maxHp: 5,
-                    vx: -2.5,
-                    vy: 0,
-                    grounded: true,
-                    alive: true,
-                    jumpTimer: 0,
-                    shootTimer: 0
+                    x: goalFlag.x - 200, y: floorY - 120, w: 75, h: 90,
+                    hp: 5, maxHp: 5, vx: -2.5, vy: 0,
+                    alive: true, jumpTimer: 0
                 };
             }
         }
 
-        /* ==========================================================================
-           4. رسم الشخصيات والعناصر (Rendering)
-           ========================================================================== */
+        /* 5. رسم الشخصيات والكائنات */
         function getActiveSkin() {
             return SKINS.find(s => s.id === playerData.currentSkin) || SKINS[0];
         }
 
-        // رسم البطل الماريو بدقة تامة طبقاً للأيقونة الأصلية
-        function drawHero(context, x, y, skin, facingRight, invulnerable = 0) {
+        function drawHero(context, x, y, skin, facingRight, invulnerable = 0, hasPowerUp = false) {
             context.save();
-            context.translate(x + 18, y + 52); // مركز القدمين
+            context.translate(x + 18, y + 52);
             if (!facingRight) context.scale(-1, 1);
 
-            // وميض المناعة
             if (invulnerable > 0 && Math.floor(Date.now() / 80) % 2 === 0) {
                 context.globalAlpha = 0.4;
             }
 
-            // 1. الحذاء البني
+            if (hasPowerUp) {
+                context.strokeStyle = `hsl(${(Date.now() / 4) % 360}, 100%, 65%)`;
+                context.lineWidth = 3.5;
+                context.shadowColor = '#facc15';
+                context.shadowBlur = 16;
+                context.beginPath();
+                context.arc(0, -42, 38, 0, Math.PI * 2);
+                context.stroke();
+                context.shadowBlur = 0;
+            }
+
             context.fillStyle = '#4a2c11';
             context.fillRect(-17, -10, 16, 10);
             context.fillRect(1, -10, 16, 10);
 
-            // 2. السروال واللباس
             context.fillStyle = skin.suit;
             context.fillRect(-15, -36, 30, 26);
-
-            // أزرار السروال
             context.fillStyle = '#facc15';
             context.fillRect(-12, -34, 6, 6);
             context.fillRect(6, -34, 6, 6);
 
-            // القميص
             context.fillStyle = skin.cap;
             context.fillRect(-17, -42, 34, 9);
 
-            // 3. الرأس
             context.fillStyle = '#d8b08c';
             context.beginPath();
             context.arc(0, -52, 15, 0, Math.PI * 2);
             context.fill();
 
-            // العين
             context.fillStyle = '#ffffff';
             context.fillRect(4, -58, 7, 9);
             context.fillStyle = '#000000';
             context.fillRect(8, -57, 3, 7);
 
-            // الأنف
             context.fillStyle = '#c49474';
             context.beginPath();
             context.arc(12, -50, 6, 0, Math.PI * 2);
             context.fill();
-
-            // الشارب
             context.fillStyle = '#3a200d';
             context.fillRect(3, -48, 11, 5);
 
-            // اليد والقفاز
             context.fillStyle = skin.cap;
             context.beginPath();
             context.arc(10, -34, 7, 0, Math.PI * 2);
@@ -946,27 +1031,21 @@
             context.arc(13, -33, 6, 0, Math.PI * 2);
             context.fill();
 
-            // 4. القبعة
             context.fillStyle = skin.cap;
             context.beginPath();
             context.arc(0, -60, 16, Math.PI, 0);
             context.fill();
-            // مقدمة القبعة
             context.fillRect(2, -63, 17, 7);
 
-            // النقطة البيضاء في القبعة
             context.fillStyle = '#ffffff';
             context.beginPath();
             context.arc(-2, -64, 5, 0, Math.PI * 2);
             context.fill();
 
-            // 5. النجمة الذهبية فوق القبعة
-            drawStarIcon(context, 0, -82, 11, 5, skin.star);
-
+            drawStarIcon(context, 0, -82, 11, 5, hasPowerUp ? '#ffffff' : skin.star);
             context.restore();
         }
 
-        // رسم النجمة
         function drawStarIcon(c, cx, cy, outerR, innerR, color = '#facc15') {
             c.save();
             c.fillStyle = color;
@@ -983,38 +1062,28 @@
             c.restore();
         }
 
-        // رسم الأعداء
         function drawEnemy(context, en) {
             context.save();
             context.translate(en.x + en.w/2, en.y + en.h/2);
 
             if (en.type === 'patrol') {
-                // فطر عدو كلاسيكي بني/برتقالي
                 context.fillStyle = '#b45309';
                 context.beginPath();
                 context.arc(0, -4, 18, Math.PI, 0);
                 context.fill();
-
                 context.fillStyle = '#fde68a';
                 context.fillRect(-10, -4, 20, 16);
-
-                // عيون
                 context.fillStyle = '#000';
                 context.fillRect(-6, 0, 3, 6);
                 context.fillRect(3, 0, 3, 6);
-
-                // أقدام سوداء
                 context.fillStyle = '#1e293b';
                 context.fillRect(-12, 12, 10, 6);
                 context.fillRect(2, 12, 10, 6);
             } else if (en.type === 'spike') {
-                // عدو شوكي أحمر
                 context.fillStyle = '#dc2626';
                 context.beginPath();
                 context.arc(0, 4, 16, Math.PI, 0);
                 context.fill();
-
-                // أشواك علوية
                 context.fillStyle = '#f8fafc';
                 for (let a = -14; a <= 14; a += 7) {
                     context.beginPath();
@@ -1023,7 +1092,6 @@
                     context.lineTo(a, -14);
                     context.fill();
                 }
-
                 context.fillStyle = '#fff';
                 context.fillRect(-6, 5, 4, 4);
                 context.fillRect(2, 5, 4, 4);
@@ -1031,20 +1099,17 @@
             context.restore();
         }
 
-        // رسم الزعيم
         function drawBoss(context, b) {
             if (!b || !b.alive) return;
             context.save();
             context.translate(b.x, b.y);
 
-            // جسم الزعيم الضخم
             context.fillStyle = '#991b1b';
             context.strokeStyle = '#450a0a';
             context.lineWidth = 3;
             context.fillRect(0, 0, b.w, b.h);
             context.strokeRect(0, 0, b.w, b.h);
 
-            // عيون حارقة
             context.fillStyle = '#fef08a';
             context.fillRect(15, 20, 14, 14);
             context.fillRect(45, 20, 14, 14);
@@ -1052,71 +1117,47 @@
             context.fillRect(20, 24, 6, 8);
             context.fillRect(50, 24, 6, 8);
 
-            // قرون الزعيم
             context.fillStyle = '#f59e0b';
             context.beginPath();
             context.moveTo(10, 0); context.lineTo(0, -25); context.lineTo(20, 0); context.fill();
             context.beginPath();
             context.moveTo(55, 0); context.lineTo(75, -25); context.lineTo(65, 0); context.fill();
 
-            // شريط طاقة الزعيم (Boss HP Bar)
             context.fillStyle = 'rgba(0,0,0,0.6)';
             context.fillRect(-10, -35, b.w + 20, 10);
             context.fillStyle = '#ef4444';
             context.fillRect(-10, -35, (b.w + 20) * (b.hp / b.maxHp), 10);
-
             context.restore();
         }
 
-        // نظام الجزيئات (Particles)
-        function spawnDust(x, y, count = 4) {
+        function spawnParticles(x, y, color = '#facc15', count = 6) {
             for (let i = 0; i < count; i++) {
                 particles.push({
-                    x: x + (Math.random() - 0.5) * 20,
-                    y: y,
-                    vx: (Math.random() - 0.5) * 3,
-                    vy: -Math.random() * 2,
-                    size: Math.random() * 4 + 2,
-                    color: 'rgba(255,255,255,0.6)',
-                    life: 1
-                });
-            }
-        }
-
-        function spawnSparkles(x, y, color = '#facc15') {
-            for (let i = 0; i < 8; i++) {
-                particles.push({
-                    x: x,
-                    y: y,
+                    x, y,
                     vx: (Math.random() - 0.5) * 5,
                     vy: (Math.random() - 0.5) * 5,
-                    size: Math.random() * 5 + 3,
-                    color: color,
-                    life: 1
+                    size: Math.random() * 4 + 2,
+                    color, life: 1
                 });
             }
         }
 
-        /* ==========================================================================
-           5. التحديث والفيزياء (Update Loop)
-           ========================================================================== */
+        /* 6. التحديث والفيزياء */
         function updateGame() {
             if (gameState !== 'PLAYING') return;
 
-            // حركة اللاعب أفقياً
+            const currentSpeed = player.hasPowerUp ? player.speed * 1.25 : player.speed;
+
             if (keys.left) {
-                player.vx = -player.speed;
+                player.vx = -currentSpeed;
                 player.facingRight = false;
-                if (player.grounded && Math.random() > 0.6) spawnDust(player.x + 18, player.y + 50, 1);
             } else if (keys.right) {
-                player.vx = player.speed;
+                player.vx = currentSpeed;
                 player.facingRight = true;
-                if (player.grounded && Math.random() > 0.6) spawnDust(player.x + 18, player.y + 50, 1);
             } else {
-                player.vx *= 0.7; // احتكاك
+                player.vx *= 0.7;
             }
 
-            // قفز
             if (keys.jump) {
                 if (player.grounded) {
                     player.vy = -player.jumpStrength;
@@ -1124,73 +1165,88 @@
                     player.doubleJumpAvailable = true;
                     keys.jump = false;
                     Sound.playJump();
-                    triggerHaptic(25);
-                    spawnDust(player.x + 18, player.y + 50, 5);
+                    triggerHaptic(20);
                 } else if (player.doubleJumpAvailable) {
                     player.vy = -player.jumpStrength * 0.9;
                     player.doubleJumpAvailable = false;
                     keys.jump = false;
                     Sound.playJump();
-                    triggerHaptic(30);
-                    spawnSparkles(player.x + 18, player.y + 40, '#38bdf8');
+                    triggerHaptic(25);
+                    spawnParticles(player.x + 18, player.y + 40, '#38bdf8', 8);
                 }
             }
 
-            // إطلاق النجوم
             if (keys.shoot && player.starShootCooldown <= 0) {
+                const dir = player.facingRight ? 1 : -1;
                 bullets.push({
                     x: player.x + (player.facingRight ? 35 : -10),
                     y: player.y + 20,
-                    vx: player.facingRight ? 9 : -9,
+                    vx: dir * 9,
+                    vy: 0,
                     life: 50
                 });
-                player.starShootCooldown = 18;
+
+                if (player.hasPowerUp) {
+                    bullets.push({
+                        x: player.x + (player.facingRight ? 35 : -10),
+                        y: player.y + 10,
+                        vx: dir * 9,
+                        vy: -2,
+                        life: 50
+                    });
+                }
+
+                player.starShootCooldown = player.hasPowerUp ? 10 : 18;
                 Sound.playShoot();
                 triggerHaptic(15);
             }
             if (player.starShootCooldown > 0) player.starShootCooldown--;
 
-            // الجاذبية
             player.vy += 0.65;
             if (player.vy > 14) player.vy = 14;
 
-            // تطبيق الحركة
             player.x += player.vx;
             player.y += player.vy;
             player.grounded = false;
 
-            // تصادم اللاعب مع الكتل
             for (let b of blocks) {
-                // ارتداد المكعب عند ضربه
                 if (b.bounceOffset > 0) b.bounceOffset *= 0.8;
 
                 if (player.x + player.width > b.x && player.x < b.x + b.w) {
-                    // السقوط على الأرض / منصة
                     if (player.y + player.height >= b.y && player.y + player.height <= b.y + 20 && player.vy >= 0) {
                         player.y = b.y - player.height;
                         player.vy = 0;
                         player.grounded = true;
-                    }
-                    // ضرب المكعب من الأسفل بالرأس
-                    else if (player.y <= b.y + b.h && player.y >= b.y + b.h - 18 && player.vy < 0) {
+                    } else if (player.y <= b.y + b.h && player.y >= b.y + b.h - 18 && player.vy < 0) {
                         player.y = b.y + b.h;
                         player.vy = 1;
                         b.bounceOffset = 8;
                         Sound.playBump();
                         triggerHaptic(20);
 
-                        if (b.type === 'question' && b.hasCoin) {
-                            b.hasCoin = false;
-                            playerData.coins += 1;
-                            score += 100;
-                            Sound.playCoin();
-                            spawnSparkles(b.x + 20, b.y, '#facc15');
+                        if (b.type === 'question') {
+                            if (b.hasPowerUp) {
+                                b.hasPowerUp = false;
+                                items.push({
+                                    x: b.x + 10,
+                                    y: b.y - 45,
+                                    type: 'powerup',
+                                    collected: false
+                                });
+                                Sound.playPowerUp();
+                                spawnParticles(b.x + 20, b.y, '#a855f7', 10);
+                            } else if (b.hasCoin) {
+                                b.hasCoin = false;
+                                playerData.coins += 1;
+                                score += 100;
+                                Sound.playCoin();
+                                spawnParticles(b.x + 20, b.y, '#facc15', 6);
+                            }
                         }
                     }
                 }
             }
 
-            // المنصات المتحركة
             for (let p of movingPlatforms) {
                 if (p.vertical) {
                     p.y += p.speed * p.dir;
@@ -1200,7 +1256,6 @@
                     if (p.x <= p.minX || p.x >= p.maxX) p.dir *= -1;
                 }
 
-                // ركوب المنصة
                 if (player.x + player.width > p.x && player.x < p.x + p.w &&
                     player.y + player.height >= p.y && player.y + player.height <= p.y + 16 && player.vy >= 0) {
                     player.y = p.y - player.height;
@@ -1210,9 +1265,8 @@
                 }
             }
 
-            // التقاط العملات والنجوم
             for (let it of items) {
-                if (!it.collected && Math.abs((player.x + 18) - it.x) < 30 && Math.abs((player.y + 26) - it.y) < 30) {
+                if (!it.collected && Math.abs((player.x + 18) - it.x) < 32 && Math.abs((player.y + 26) - it.y) < 32) {
                     it.collected = true;
                     if (it.type === 'coin') {
                         playerData.coins += 1;
@@ -1222,23 +1276,28 @@
                         playerData.stars += 1;
                         score += 200;
                         Sound.playCoin();
+                    } else if (it.type === 'powerup') {
+                        player.hasPowerUp = true;
+                        player.powerUpType = 'SUPER_STAR';
+                        score += 500;
+                        if (lives < 4) lives++;
+                        Sound.playPowerUp();
+                        triggerHaptic([40, 60, 40]);
+                        spawnParticles(player.x + 18, player.y + 20, '#a855f7', 15);
                     }
-                    triggerHaptic(20);
-                    spawnSparkles(it.x, it.y, it.type === 'coin' ? '#facc15' : '#38bdf8');
                 }
             }
 
-            // تحديث المقذوفات
             for (let i = bullets.length - 1; i >= 0; i--) {
                 const b = bullets[i];
                 b.x += b.vx;
+                b.y += b.vy;
                 b.life--;
                 if (b.life <= 0) {
                     bullets.splice(i, 1);
                     continue;
                 }
 
-                // إصابة الأعداء بالقذيفة
                 for (let en of enemies) {
                     if (en.alive && Math.abs(b.x - (en.x + en.w/2)) < 24 && Math.abs(b.y - (en.y + en.h/2)) < 24) {
                         en.alive = false;
@@ -1246,19 +1305,16 @@
                         score += 150;
                         playerData.enemiesDefeated++;
                         Sound.playStomp();
-                        triggerHaptic(30);
-                        spawnSparkles(en.x, en.y, '#f43f5e');
+                        spawnParticles(en.x, en.y, '#f43f5e', 8);
                         break;
                     }
                 }
 
-                // إصابة الزعيم
                 if (boss && boss.alive && b.x > boss.x && b.x < boss.x + boss.w && b.y > boss.y && b.y < boss.y + boss.h) {
                     boss.hp--;
                     bullets.splice(i, 1);
                     Sound.playStomp();
-                    triggerHaptic(40);
-                    spawnSparkles(b.x, b.y, '#ef4444');
+                    spawnParticles(b.x, b.y, '#ef4444', 8);
                     if (boss.hp <= 0) {
                         boss.alive = false;
                         score += 1000;
@@ -1268,39 +1324,42 @@
                 }
             }
 
-            // حركة وتصادم الأعداء
             for (let en of enemies) {
                 if (!en.alive) continue;
                 en.x += en.vx;
                 if (en.x <= en.minX || en.x >= en.maxX) en.vx *= -1;
 
-                // تصادم مع اللاعب
                 if (Math.abs((player.x + player.width/2) - (en.x + en.w/2)) < 30 &&
                     Math.abs((player.y + player.height/2) - (en.y + en.h/2)) < 35) {
 
-                    // القفز على رأس العدو (فقط للأعداء العاديين)
                     if (en.type === 'patrol' && player.vy > 0 && player.y + player.height < en.y + 24) {
                         en.alive = false;
                         player.vy = -player.jumpStrength * 0.8;
                         score += 100;
                         playerData.enemiesDefeated++;
                         Sound.playStomp();
-                        triggerHaptic(30);
-                        spawnSparkles(en.x + 18, en.y + 18, '#facc15');
+                        spawnParticles(en.x + 18, en.y + 18, '#facc15', 6);
                     } else if (player.invulnerableTime <= 0) {
-                        // ضرر للاعب
-                        lives--;
-                        player.invulnerableTime = 70;
-                        player.vy = -6;
-                        player.vx = player.facingRight ? -4 : 4;
-                        Sound.playHurt();
-                        triggerHaptic(70);
-                        if (lives <= 0) gameOver(false);
+                        if (player.hasPowerUp) {
+                            player.hasPowerUp = false;
+                            player.powerUpType = 'NONE';
+                            player.invulnerableTime = 60;
+                            Sound.playHurt();
+                            triggerHaptic(50);
+                            spawnParticles(player.x + 18, player.y + 20, '#a855f7', 12);
+                        } else {
+                            lives--;
+                            player.invulnerableTime = 70;
+                            player.vy = -6;
+                            player.vx = player.facingRight ? -4 : 4;
+                            Sound.playHurt();
+                            triggerHaptic(70);
+                            if (lives <= 0) gameOver();
+                        }
                     }
                 }
             }
 
-            // تصرفات الزعيم
             if (boss && boss.alive) {
                 boss.x += boss.vx;
                 if (boss.x < goalFlag.x - 380 || boss.x > goalFlag.x - 80) boss.vx *= -1;
@@ -1318,40 +1377,32 @@
                     boss.vy = 0;
                 }
 
-                // تصادم الزعيم مع اللاعب
                 if (player.invulnerableTime <= 0 &&
                     player.x + player.width > boss.x && player.x < boss.x + boss.w &&
                     player.y + player.height > boss.y && player.y < boss.y + boss.h) {
-                    lives--;
-                    player.invulnerableTime = 80;
-                    player.vy = -8;
+                    if (player.hasPowerUp) {
+                        player.hasPowerUp = false;
+                        player.invulnerableTime = 70;
+                    } else {
+                        lives--;
+                        player.invulnerableTime = 80;
+                        if (lives <= 0) gameOver();
+                    }
                     Sound.playHurt();
-                    triggerHaptic(80);
-                    if (lives <= 0) gameOver(false);
                 }
             }
 
-            // تناقص عداد المناعة
             if (player.invulnerableTime > 0) player.invulnerableTime--;
+            if (player.y > window.innerHeight + 100) gameOver();
 
-            // السقوط في الحفرة
-            if (player.y > window.innerHeight + 100) {
-                gameOver(false);
-            }
-
-            // الوصول لخط النهاية
             if (player.x >= goalFlag.x) {
-                if (!boss || !boss.alive) {
-                    levelComplete();
-                }
+                if (!boss || !boss.alive) levelComplete();
             }
 
-            // حركة الكاميرا المتتبعة للاعب بسلاسة
             const targetCamX = player.x - window.innerWidth * 0.35;
             cameraX += (targetCamX - cameraX) * 0.1;
             if (cameraX < 0) cameraX = 0;
 
-            // تحديث الجزيئات
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.x += p.vx;
@@ -1360,29 +1411,27 @@
                 if (p.life <= 0) particles.splice(i, 1);
             }
 
-            // تحديث HUD
             document.getElementById('hud-score').innerText = score;
             document.getElementById('hud-coins').innerText = playerData.coins;
             document.getElementById('hud-stars').innerText = playerData.stars;
             document.getElementById('hud-lives').innerText = '❤️'.repeat(Math.max(0, lives));
+
+            const pwHud = document.getElementById('hud-powerup');
+            if (player.hasPowerUp) pwHud.classList.remove('hidden');
+            else pwHud.classList.add('hidden');
         }
 
-        /* ==========================================================================
-           6. الرسم النهائي في الكانفاس (Draw Loop)
-           ========================================================================== */
+        /* 7. العرض */
         function render() {
-            if (gameState === 'MENU') return;
-
+            if (gameState === 'MENU' && !isEditingControls) return;
             const lvl = LEVELS[currentLevel - 1];
 
-            // 1. خلفية السماء
             const skyGrad = ctx.createLinearGradient(0, 0, 0, window.innerHeight);
             skyGrad.addColorStop(0, lvl.sky);
             skyGrad.addColorStop(1, '#0f172a');
             ctx.fillStyle = skyGrad;
             ctx.fillRect(0, 0, window.innerWidth, window.innerHeight);
 
-            // 2. تلال بارالاكس في الخلفية (تتحرك أبطأ مع الكاميرا)
             ctx.fillStyle = lvl.theme === 'cave' ? '#0f172a' : (lvl.theme === 'castle' ? '#450a0a' : '#15803d');
             ctx.beginPath();
             for (let i = -1; i < 8; i++) {
@@ -1394,17 +1443,15 @@
             ctx.save();
             ctx.translate(-cameraX, 0);
 
-            // 3. رسم الكتل والأرضيات
             for (let b of blocks) {
                 const drawY = b.y - b.bounceOffset;
                 if (b.type === 'ground') {
-                    // عشب وتربة
                     ctx.fillStyle = lvl.theme === 'castle' ? '#7f1d1d' : (lvl.theme === 'cave' ? '#334155' : '#16a34a');
                     ctx.fillRect(b.x, drawY, b.w, 18);
                     ctx.fillStyle = lvl.theme === 'castle' ? '#450a0a' : (lvl.theme === 'cave' ? '#1e293b' : '#7c2d12');
                     ctx.fillRect(b.x, drawY + 18, b.w, b.h);
                 } else if (b.type === 'question') {
-                    ctx.fillStyle = b.hasCoin ? '#f59e0b' : '#64748b';
+                    ctx.fillStyle = (b.hasCoin || b.hasPowerUp) ? '#f59e0b' : '#64748b';
                     ctx.fillRect(b.x, drawY, b.w, b.h);
                     ctx.strokeStyle = '#451a03';
                     ctx.lineWidth = 2;
@@ -1412,7 +1459,7 @@
                     ctx.fillStyle = '#fff';
                     ctx.font = 'bold 22px sans-serif';
                     ctx.textAlign = 'center';
-                    ctx.fillText(b.hasCoin ? '?' : '•', b.x + b.w/2, drawY + b.h * 0.72);
+                    ctx.fillText((b.hasCoin || b.hasPowerUp) ? '?' : '•', b.x + b.w/2, drawY + b.h * 0.72);
                 } else if (b.type === 'brick') {
                     ctx.fillStyle = '#b45309';
                     ctx.fillRect(b.x, drawY, b.w, b.h);
@@ -1422,16 +1469,13 @@
                 }
             }
 
-            // 4. رسم المنصات المتحركة
             for (let p of movingPlatforms) {
                 ctx.fillStyle = '#38bdf8';
                 ctx.fillRect(p.x, p.y, p.w, p.h);
                 ctx.strokeStyle = '#0284c7';
-                ctx.lineWidth = 2;
                 ctx.strokeRect(p.x, p.y, p.w, p.h);
             }
 
-            // 5. رسم العناصر (العملات والنجوم)
             for (let it of items) {
                 if (it.collected) continue;
                 if (it.type === 'coin') {
@@ -1439,14 +1483,16 @@
                     ctx.beginPath();
                     ctx.arc(it.x, it.y + Math.sin(Date.now() / 200) * 4, 11, 0, Math.PI * 2);
                     ctx.fill();
-                    ctx.strokeStyle = '#b45309';
-                    ctx.stroke();
                 } else if (it.type === 'star') {
-                    drawStarIcon(ctx, it.x, it.y + Math.sin(Date.now() / 180) * 5, 15, 7, '#38bdf8');
+                    drawStarIcon(ctx, it.x, it.y + Math.sin(Date.now() / 180) * 5, 14, 7, '#38bdf8');
+                } else if (it.type === 'powerup') {
+                    ctx.shadowColor = '#a855f7';
+                    ctx.shadowBlur = 15;
+                    drawStarIcon(ctx, it.x, it.y + Math.sin(Date.now() / 140) * 6, 18, 9, '#e879f9');
+                    ctx.shadowBlur = 0;
                 }
             }
 
-            // 6. رسم خط النهاية والعلم
             ctx.fillStyle = '#f8fafc';
             ctx.fillRect(goalFlag.x, goalFlag.y, 6, 140);
             ctx.fillStyle = '#ef4444';
@@ -1456,21 +1502,13 @@
             ctx.lineTo(goalFlag.x + 6, goalFlag.y + 40);
             ctx.fill();
 
-            // 7. رسم الأعداء والزعيم
-            for (let en of enemies) {
-                if (en.alive) drawEnemy(ctx, en);
-            }
+            for (let en of enemies) if (en.alive) drawEnemy(ctx, en);
             if (boss) drawBoss(ctx, boss);
 
-            // 8. رسم قذائف النجوم
-            for (let b of bullets) {
-                drawStarIcon(ctx, b.x, b.y, 10, 5, '#facc15');
-            }
+            for (let b of bullets) drawStarIcon(ctx, b.x, b.y, 10, 5, player.hasPowerUp ? '#e879f9' : '#facc15');
 
-            // 9. رسم البطل
-            drawHero(ctx, player.x, player.y, getActiveSkin(), player.facingRight, player.invulnerableTime);
+            drawHero(ctx, player.x, player.y, getActiveSkin(), player.facingRight, player.invulnerableTime, player.hasPowerUp);
 
-            // 10. رسم الجزيئات
             for (let p of particles) {
                 ctx.fillStyle = p.color;
                 ctx.globalAlpha = p.life;
@@ -1479,7 +1517,6 @@
                 ctx.fill();
             }
             ctx.globalAlpha = 1;
-
             ctx.restore();
         }
 
@@ -1490,10 +1527,8 @@
         }
         requestAnimationFrame(gameLoop);
 
-        /* ==========================================================================
-           7. إدارة الحالات والقوائم (States & Menus)
-           ========================================================================== */
-        function startGame(lvlNum) {
+        /* 8. إدارة الحالات */
+        function startGame(lvlNum, keepPowerUps = false) {
             Sound.init();
             currentLevel = lvlNum;
             gameState = 'PLAYING';
@@ -1501,10 +1536,11 @@
             document.getElementById('main-menu').classList.add('hidden');
             document.getElementById('game-over-screen').classList.add('hidden');
             document.getElementById('pause-screen').classList.add('hidden');
+            document.getElementById('level-complete-screen').classList.add('hidden');
             document.getElementById('hud').classList.remove('hidden');
-            document.getElementById('touch-controls').classList.remove('hidden');
+            document.getElementById('controls-layer').classList.remove('hidden');
 
-            buildLevel(currentLevel);
+            buildLevel(currentLevel, keepPowerUps);
         }
 
         function levelComplete() {
@@ -1520,38 +1556,62 @@
             if (score > playerData.highScore) playerData.highScore = score;
             saveData();
 
-            document.getElementById('game-over-title').innerText = '🎉 أحسنت! اكتملت المرحلة';
-            document.getElementById('game-over-title').style.color = '#4ade80';
-            document.getElementById('game-over-desc').innerText = 'تم فتح المرحلة التالية بنجاح!';
-            document.getElementById('game-over-score').innerText = score;
-            document.getElementById('game-over-screen').classList.remove('hidden');
+            const curLvl = LEVELS[currentLevel - 1];
+            document.getElementById('completed-lvl-text').innerText = curLvl.name;
+
+            const nextLvlBtn = document.getElementById('btn-next-stage');
+            const carriedBadge = document.getElementById('carried-powerup-badge');
+
+            if (currentLevel < LEVELS.length) {
+                const nxtLvl = LEVELS[currentLevel];
+                document.getElementById('next-lvl-text').innerText = nxtLvl.name;
+                nextLvlBtn.classList.remove('hidden');
+                nextLvlBtn.innerText = `▶ الانتقال إلى المرحلة التالية (${nxtLvl.name})`;
+            } else {
+                document.getElementById('next-lvl-text').innerText = '🏆 أنهيت جميع العوالم بنجاح!';
+                nextLvlBtn.classList.add('hidden');
+            }
+
+            if (player.hasPowerUp || lives > 1) {
+                carriedBadge.classList.remove('hidden');
+                carriedBadge.innerText = player.hasPowerUp 
+                    ? `⚡ تم الاحتفاظ بباور-أب النجمة الخارقة و ${lives} قلوب للمرحلة التالية!`
+                    : `❤️ تم الاحتفاظ بـ ${lives} قلوب والنقاط للمرحلة التالية!`;
+            } else {
+                carriedBadge.classList.add('hidden');
+            }
+
+            document.getElementById('complete-score').innerText = score;
+            document.getElementById('level-complete-screen').classList.remove('hidden');
         }
 
-        function gameOver(isWin = false) {
+        function goToNextLevel() {
+            if (currentLevel < LEVELS.length) {
+                startGame(currentLevel + 1, true);
+            }
+        }
+
+        function gameOver() {
             gameState = 'GAMEOVER';
             Sound.playHurt();
             triggerHaptic([200, 100, 200]);
-
             if (score > playerData.highScore) playerData.highScore = score;
             saveData();
-
-            document.getElementById('game-over-title').innerText = '💔 سقط البطل!';
-            document.getElementById('game-over-title').style.color = '#ef4444';
-            document.getElementById('game-over-desc').innerText = 'حاول مجدداً، القفز في التوقيت المناسب هو مفتاح النصر!';
             document.getElementById('game-over-score').innerText = score;
             document.getElementById('game-over-screen').classList.remove('hidden');
         }
 
         function restartLevel() {
-            startGame(currentLevel);
+            startGame(currentLevel, false);
         }
 
         function returnToMenu() {
             gameState = 'MENU';
             document.getElementById('hud').classList.add('hidden');
-            document.getElementById('touch-controls').classList.add('hidden');
+            document.getElementById('controls-layer').classList.add('hidden');
             document.getElementById('game-over-screen').classList.add('hidden');
             document.getElementById('pause-screen').classList.add('hidden');
+            document.getElementById('level-complete-screen').classList.add('hidden');
             document.getElementById('main-menu').classList.remove('hidden');
             updateUI();
         }
@@ -1569,8 +1629,7 @@
         function toggleSound() {
             Sound.init();
             Sound.enabled = !Sound.enabled;
-            const btn = document.getElementById('sound-btn');
-            btn.innerText = Sound.enabled ? '🔊 الصوت مفتوح' : '🔇 الصوت مكتوم';
+            document.getElementById('sound-btn').innerText = Sound.enabled ? '🔊 الصوت مفتوح' : '🔇 الصوت مكتوم';
         }
 
         function openModal(id) {
@@ -1579,6 +1638,7 @@
             if (id === 'shop-modal') renderShop();
             if (id === 'levels-modal') renderLevels();
             if (id === 'profile-modal') renderProfile();
+            if (id === 'controls-modal') initButtonPainter();
         }
 
         function closeModal(id) {
@@ -1586,8 +1646,321 @@
         }
 
         /* ==========================================================================
-           8. النوافذ التفاعلية (Shop, Levels, Profile)
+           9. نظام تخصيص أماكن أزرار التحكم (Drag & Reposition System)
            ========================================================================== */
+        let isEditingControls = false;
+        let tempButtonPositions = {};
+
+        const DEFAULT_BTN_CONFIG = {
+            'btn-left':  { left: 24, bottom: 24, size: 66 },
+            'btn-right': { left: 104, bottom: 24, size: 66 },
+            'btn-shoot': { right: 104, bottom: 24, size: 66 },
+            'btn-jump':  { right: 24, bottom: 24, size: 66 }
+        };
+
+        function applySavedButtonPositions() {
+            const config = playerData.buttonSettings?.positions || DEFAULT_BTN_CONFIG;
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            for (const [id, pos] of Object.entries(config)) {
+                const el = document.getElementById(id);
+                if (!el) continue;
+                el.style.width = (pos.size || 66) + 'px';
+                el.style.height = (pos.size || 66) + 'px';
+
+                if (pos.left !== undefined) {
+                    el.style.left = pos.left + 'px';
+                    el.style.right = 'auto';
+                } else if (pos.right !== undefined) {
+                    el.style.right = pos.right + 'px';
+                    el.style.left = 'auto';
+                }
+
+                if (pos.top !== undefined) {
+                    el.style.top = pos.top + 'px';
+                    el.style.bottom = 'auto';
+                } else if (pos.bottom !== undefined) {
+                    el.style.bottom = pos.bottom + 'px';
+                    el.style.top = 'auto';
+                }
+            }
+        }
+
+        function enterLayoutEditor() {
+            closeModal('controls-modal');
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('controls-layer').classList.remove('hidden');
+            document.getElementById('editor-toolbar').classList.remove('hidden');
+            isEditingControls = true;
+
+            // تمييز الأزرار لتبدو قابلة للسحب
+            ['btn-left', 'btn-right', 'btn-jump', 'btn-shoot'].forEach(id => {
+                const el = document.getElementById(id);
+                el.classList.add('in-edit-mode');
+                attachDragBehavior(el);
+            });
+        }
+
+        function exitLayoutEditor() {
+            document.getElementById('editor-toolbar').classList.add('hidden');
+            document.getElementById('controls-layer').classList.add('hidden');
+            document.getElementById('main-menu').classList.remove('hidden');
+            isEditingControls = false;
+
+            ['btn-left', 'btn-right', 'btn-jump', 'btn-shoot'].forEach(id => {
+                document.getElementById(id).classList.remove('in-edit-mode');
+            });
+            applySavedButtonPositions();
+        }
+
+        function saveCustomButtonPositions() {
+            const positions = {};
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+
+            ['btn-left', 'btn-right', 'btn-jump', 'btn-shoot'].forEach(id => {
+                const el = document.getElementById(id);
+                const rect = el.getBoundingClientRect();
+                positions[id] = {
+                    left: Math.round(rect.left),
+                    top: Math.round(rect.top),
+                    size: Math.round(rect.width)
+                };
+            });
+
+            playerData.buttonSettings.positions = positions;
+            saveData();
+            Sound.playCoin();
+            exitLayoutEditor();
+        }
+
+        function resetButtonPositions() {
+            playerData.buttonSettings.positions = null;
+            saveData();
+            applySavedButtonPositions();
+            Sound.playBump();
+        }
+
+        function attachDragBehavior(el) {
+            let startX = 0, startY = 0, initialLeft = 0, initialTop = 0;
+            let isDragging = false;
+
+            const onStart = (e) => {
+                if (!isEditingControls) return;
+                e.preventDefault();
+                isDragging = true;
+                const point = e.touches ? e.touches[0] : e;
+                startX = point.clientX;
+                startY = point.clientY;
+                const rect = el.getBoundingClientRect();
+                initialLeft = rect.left;
+                initialTop = rect.top;
+            };
+
+            const onMove = (e) => {
+                if (!isDragging || !isEditingControls) return;
+                e.preventDefault();
+                const point = e.touches ? e.touches[0] : e;
+                const dx = point.clientX - startX;
+                const dy = point.clientY - startY;
+
+                let newLeft = initialLeft + dx;
+                let newTop = initialTop + dy;
+
+                // منع خروج الزر عن حدود الشاشة
+                newLeft = Math.max(5, Math.min(window.innerWidth - el.offsetWidth - 5, newLeft));
+                newTop = Math.max(5, Math.min(window.innerHeight - el.offsetHeight - 5, newTop));
+
+                el.style.left = newLeft + 'px';
+                el.style.top = newTop + 'px';
+                el.style.right = 'auto';
+                el.style.bottom = 'auto';
+            };
+
+            const onEnd = () => {
+                isDragging = false;
+            };
+
+            el.addEventListener('touchstart', onStart, { passive: false });
+            window.addEventListener('touchmove', onMove, { passive: false });
+            window.addEventListener('touchend', onEnd);
+
+            el.addEventListener('mousedown', onStart);
+            window.addEventListener('mousemove', onMove);
+            window.addEventListener('mouseup', onEnd);
+        }
+
+        /* ==========================================================================
+           10. نظام رسم وتصميم أزرار التحكم يدوياً (Control Painter)
+           ========================================================================== */
+        let currentDrawTarget = 'left';
+        let isDrawingOnCanvas = false;
+        let painterCtx = null;
+        let brushColor = '#ffffff';
+        let isEraser = false;
+
+        function initButtonPainter() {
+            const pCanvas = document.getElementById('btn-painter-canvas');
+            painterCtx = pCanvas.getContext('2d');
+            selectButtonToDraw('left');
+            setupPainterEvents(pCanvas);
+        }
+
+        function selectButtonToDraw(btnKey) {
+            currentDrawTarget = btnKey;
+            document.querySelectorAll('.target-btn-select').forEach(b => b.classList.remove('btn-primary'));
+            const targetBtnEl = document.getElementById('pick-' + btnKey);
+            if (targetBtnEl) targetBtnEl.classList.add('btn-primary');
+
+            // تفريغ أو جلب الرسمة السابقة المحفوظة
+            clearDrawCanvas();
+            const savedDataUrl = playerData.buttonSettings?.icons?.[btnKey];
+            if (savedDataUrl) {
+                const img = new Image();
+                img.onload = () => {
+                    painterCtx.drawImage(img, 0, 0, 128, 128);
+                };
+                img.src = savedDataUrl;
+            } else {
+                // رسم الأيقونة الافتراضية كدليل خفيف
+                painterCtx.fillStyle = 'rgba(255,255,255,0.2)';
+                painterCtx.font = 'bold 50px sans-serif';
+                painterCtx.textAlign = 'center';
+                painterCtx.textBaseline = 'middle';
+                const defaults = { left: '◀', right: '▶', jump: '▲', shoot: '⭐' };
+                painterCtx.fillText(defaults[btnKey], 64, 64);
+            }
+        }
+
+        function setDrawColor(color, el) {
+            brushColor = color;
+            isEraser = false;
+            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+            if (el) el.classList.add('selected');
+        }
+
+        function setDrawEraser(el) {
+            isEraser = true;
+            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('selected'));
+        }
+
+        function clearDrawCanvas() {
+            if (painterCtx) {
+                painterCtx.clearRect(0, 0, 128, 128);
+            }
+        }
+
+        function setupPainterEvents(c) {
+            const startDraw = (e) => {
+                e.preventDefault();
+                isDrawingOnCanvas = true;
+                drawOnCanvas(e);
+            };
+            const draw = (e) => {
+                if (!isDrawingOnCanvas) return;
+                e.preventDefault();
+                drawOnCanvas(e);
+            };
+            const stopDraw = () => {
+                isDrawingOnCanvas = false;
+                painterCtx.beginPath();
+            };
+
+            c.addEventListener('touchstart', startDraw, { passive: false });
+            c.addEventListener('touchmove', draw, { passive: false });
+            c.addEventListener('touchend', stopDraw);
+
+            c.addEventListener('mousedown', startDraw);
+            c.addEventListener('mousemove', draw);
+            c.addEventListener('mouseup', stopDraw);
+            c.addEventListener('mouseleave', stopDraw);
+        }
+
+        function drawOnCanvas(e) {
+            const c = document.getElementById('btn-painter-canvas');
+            const rect = c.getBoundingClientRect();
+            const point = e.touches ? e.touches[0] : e;
+            const x = (point.clientX - rect.left) * (128 / rect.width);
+            const y = (point.clientY - rect.top) * (128 / rect.height);
+
+            painterCtx.lineWidth = isEraser ? 14 : 7;
+            painterCtx.lineCap = 'round';
+            painterCtx.lineJoin = 'round';
+
+            if (isEraser) {
+                painterCtx.globalCompositeOperation = 'destination-out';
+            } else {
+                painterCtx.globalCompositeOperation = 'source-over';
+                painterCtx.strokeStyle = brushColor;
+                painterCtx.fillStyle = brushColor;
+            }
+
+            painterCtx.lineTo(x, y);
+            painterCtx.stroke();
+            painterCtx.beginPath();
+            painterCtx.moveTo(x, y);
+        }
+
+        function saveDrawnIcon() {
+            const pCanvas = document.getElementById('btn-painter-canvas');
+            const dataUrl = pCanvas.toDataURL('image/png');
+
+            if (!playerData.buttonSettings.icons) playerData.buttonSettings.icons = {};
+            playerData.buttonSettings.icons[currentDrawTarget] = dataUrl;
+            saveData();
+
+            applySavedButtonIcons();
+            Sound.playCoin();
+            alert('تم تطبيق رسمتك بنجاح على الزر!');
+        }
+
+        function resetCurrentDrawnIcon() {
+            if (playerData.buttonSettings.icons) {
+                delete playerData.buttonSettings.icons[currentDrawTarget];
+                saveData();
+                applySavedButtonIcons();
+                clearDrawCanvas();
+                Sound.playBump();
+                alert('تمت استعادة الأيقونة الأصلية للزر.');
+            }
+        }
+
+        function applySavedButtonIcons() {
+            const map = {
+                left: 'btn-left',
+                right: 'btn-right',
+                jump: 'btn-jump',
+                shoot: 'btn-shoot'
+            };
+
+            for (const [key, btnId] of Object.entries(map)) {
+                const el = document.getElementById(btnId);
+                if (!el) continue;
+                const iconData = playerData.buttonSettings?.icons?.[key];
+
+                const existingImg = el.querySelector('img.custom-icon');
+                const defaultIcon = el.querySelector('span.default-icon');
+
+                if (iconData) {
+                    if (defaultIcon) defaultIcon.style.display = 'none';
+                    if (!existingImg) {
+                        const img = document.createElement('img');
+                        img.className = 'custom-icon';
+                        img.src = iconData;
+                        el.appendChild(img);
+                    } else {
+                        existingImg.src = iconData;
+                        existingImg.style.display = 'block';
+                    }
+                } else {
+                    if (defaultIcon) defaultIcon.style.display = 'block';
+                    if (existingImg) existingImg.style.display = 'none';
+                }
+            }
+        }
+
+        /* 11. باقي وظائف المتجر والملف الشخصي */
         function renderShop() {
             document.getElementById('shop-coins-display').innerText = playerData.coins;
             const container = document.getElementById('skins-container');
@@ -1596,7 +1969,6 @@
             SKINS.forEach(skin => {
                 const owned = playerData.ownedSkins.includes(skin.id);
                 const active = playerData.currentSkin === skin.id;
-
                 const card = document.createElement('div');
                 card.className = `skin-card ${active ? 'active' : ''}`;
 
@@ -1612,18 +1984,14 @@
 
                 card.innerHTML = `
                     <canvas id="preview-${skin.id}" width="60" height="60" class="skin-preview"></canvas>
-                    <div class="skin-name">${skin.name}</div>
+                    <div style="font-weight:bold; font-size:13px;">${skin.name}</div>
                     ${btnHtml}
                 `;
                 container.appendChild(card);
 
-                // رسم استعراض السكين
                 setTimeout(() => {
                     const c = document.getElementById(`preview-${skin.id}`);
-                    if (c) {
-                        const cx = c.getContext('2d');
-                        drawHero(cx, 12, 4, skin, true);
-                    }
+                    if (c) drawHero(c.getContext('2d'), 12, 4, skin, true);
                 }, 10);
             });
         }
@@ -1654,7 +2022,6 @@
         function renderLevels() {
             const container = document.getElementById('levels-container');
             container.innerHTML = '';
-
             LEVELS.forEach(lvl => {
                 const unlocked = lvl.id <= playerData.unlockedLevel;
                 const row = document.createElement('div');
@@ -1662,17 +2029,16 @@
                 row.onclick = () => {
                     if (unlocked) {
                         closeModal('levels-modal');
-                        startGame(lvl.id);
+                        startGame(lvl.id, false);
                     }
                 };
-
                 row.innerHTML = `
                     <div>
-                        <div style="font-weight: 800; font-size: 16px;">المرحلة ${lvl.name}</div>
-                        <div style="font-size: 13px; color: #94a3b8;">${lvl.desc}</div>
+                        <div style="font-weight: 800; font-size: 15px;">المرحلة ${lvl.name}</div>
+                        <div style="font-size: 12px; color: #94a3b8;">${lvl.desc}</div>
                     </div>
-                    <div style="font-size: 20px;">
-                        ${unlocked ? (lvl.id < playerData.unlockedLevel ? '⭐ مكتملة' : '▶ العب') : '🔒 مقفلة'}
+                    <div style="font-size: 16px;">
+                        ${unlocked ? (lvl.id < playerData.unlockedLevel ? '⭐ مكتملة' : '▶ العب') : '🔒'}
                     </div>
                 `;
                 container.appendChild(row);
@@ -1684,24 +2050,6 @@
             document.getElementById('prof-coins').innerText = playerData.coins;
             document.getElementById('prof-stars').innerText = playerData.stars;
             document.getElementById('prof-enemies').innerText = playerData.enemiesDefeated;
-
-            const achList = document.getElementById('achievements-list');
-            const achievements = [
-                { title: 'الخطوة الأولى', desc: 'إنهاء المرحلة الأولى', done: playerData.unlockedLevel > 1 },
-                { title: 'صياد العملات', desc: 'جمع 50 عملة ذهبية', done: playerData.coins >= 50 },
-                { title: 'قاهر الأعداء', desc: 'هزيمة 10 أعداء', done: playerData.enemiesDefeated >= 10 },
-                { title: 'ملك الأناقة', desc: 'شراء سكين جديد من المتجر', done: playerData.ownedSkins.length > 1 }
-            ];
-
-            achList.innerHTML = achievements.map(a => `
-                <div style="background: #232b50; padding: 8px 12px; border-radius: 8px; display: flex; justify-content: space-between; align-items: center;">
-                    <div>
-                        <b>${a.title}</b>
-                        <div style="color: #94a3b8; font-size: 12px;">${a.desc}</div>
-                    </div>
-                    <div>${a.done ? '✅ تم' : '⏳ قيد التقدم'}</div>
-                </div>
-            `).join('');
         }
 
         function drawMenuAvatar() {
@@ -1719,9 +2067,7 @@
             drawMenuAvatar();
         }
 
-        /* ==========================================================================
-           9. معالجة الإدخال وأزرار اللمس (Input Handling)
-           ========================================================================== */
+        /* 12. الإدخال للأزرار واللمس المتعدد */
         window.addEventListener('keydown', e => {
             Sound.init();
             if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
@@ -1738,18 +2084,19 @@
             if (e.code === 'KeyZ' || e.code === 'KeyJ') keys.shoot = false;
         });
 
-        // أحداث اللمس للشاشات الذكية (Multi-Touch Support)
         function bindTouch(btnId, keyName) {
             const el = document.getElementById(btnId);
             if (!el) return;
 
             const handleStart = (e) => {
+                if (isEditingControls) return; // في وضع التعديل لا تعمل كأزرار لعب
                 e.preventDefault();
                 Sound.init();
                 keys[keyName] = true;
                 el.classList.add('active');
             };
             const handleEnd = (e) => {
+                if (isEditingControls) return;
                 e.preventDefault();
                 keys[keyName] = false;
                 el.classList.remove('active');
@@ -1768,7 +2115,6 @@
         bindTouch('btn-jump', 'jump');
         bindTouch('btn-shoot', 'shoot');
 
-        // بدء التشغيل
         window.onload = () => {
             loadSavedData();
             drawMenuAvatar();
